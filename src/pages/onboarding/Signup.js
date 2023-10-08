@@ -1,24 +1,23 @@
-import Image from 'next/image';
-import Link from 'next/link';
+
 import React, { useState } from 'react'
-import Logo from '../../../assets/img/logo.png'
-import TextField from '@/components/form/TextField';
-import FormButton from '@/components/form/FormButton';
-import RadioGroup from '@/components/form/RadioGroup';
-import ArrowIcon from '@/components/icons/ArrowIcon';
-import FileUpload from '@/components/form/FileUpload';
-import { useRouter } from 'next/router';
-import SelectField from '@/components/form/SelectField';
-import DateField from '@/components/form/DateField';
+import Logo from '../../assets/img/logo.png'
+import { Link, useNavigate } from 'react-router-dom';
+import TextField from '../../components/elements/form/TextField';
+import RadioGroup from '../../components/elements/form/RadioGroup';
+import FormButton from '../../components/elements/form/FormButton';
+import SelectField from '../../components/elements/form/SelectField';
+import DateField from '../../components/elements/form/DateField';
+import ArrowIcon from '../../components/elements/icons/ArrowIcon';
+import FileUpload from '../../components/elements/form/FileUpload';
 
 const Signup = () => {
     const [onboardPayload, setOnboardPayload] = useState({});
     const [validationErrors, setValidationErrors] = useState({});
 	const [activeStep, setActiveStep] = useState(1);
-	const router = useRouter();
+	const navigate = useNavigate();
 
 	const completeOnboarding = () => {
-		router.push('/')
+		navigate('/')
 	}
 
 	const educationTypes = [
@@ -61,10 +60,10 @@ const Signup = () => {
 		<>
 			<div className="relative">
 				<div className="w-4/12 p-10 rounded border border-gray-10 mx-auto mt-24">
-					<Link href="/">
-						<a className="flex items-center gap-x-2">
-							<Image src={Logo} alt="logo" /><p className="tracking-[0.2em] font-medium mt-[10px]">HRMS</p>
-						</a>
+					<Link to="/">
+						<span className="flex items-center gap-x-2">
+							<img src={Logo} alt="logo" /><p className="tracking-[0.2em] font-medium mt-[10px]">HRMS</p>
+						</span>
 					</Link>
 
 					<h3 className='font-montserrat text-lg font-medium dark:text-white mt-8'>Welcome aboard</h3>

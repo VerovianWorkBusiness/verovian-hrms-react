@@ -43,8 +43,8 @@ const ErrorNotifier = () => {
                 <button className='absolute -right-8 -top-8' onClick={()=>{dismissHandler()}}>
                     <CloseIconCircled className={`w-8 h-8 text-red-500`} />
                 </button>
-                <p className='font-medium text-md'>Sorry,something went wrong</p>
-                <p className='text-sm text-white'>
+                <p className='text-sm mb-2'>Sorry, something went wrong</p>
+                <p className='font-medium text-sm text-white'>
                     {error.message}
                 </p>
 

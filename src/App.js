@@ -16,26 +16,14 @@ import Login from './pages/auth/Login';
 // import SupportTickets from './pages/user/support/SupportTickets';
 // import ProfileSettings from './pages/user/ProfileSettings';
 import ScrollToTop from './components/layout/ScrollToTop';
+import Signup from './pages/onboarding/Signup';
+import RequestPasswordReset from './pages/auth/RequestPasswordReset';
+import ResetPassword from './pages/auth/ResetPassword';
+import User from './pages/User';
+import Home from './pages/user/home';
 
 function App() {
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-
     <Provider store={store}>
 
         <ErrorNotifier />
@@ -43,14 +31,13 @@ function App() {
         
         <Routes>
           <Route path="/" exact element={<Login />} />
-          {/* <Route path="/signup" exact element={<CreateAccount />} /> */}
-          {/* <Route path="/account-confirmation/:confirmationCode" exact element={<AccountActivation />} />
-          <Route path="/password-reset" exact element={<PasswordResetRequest />} />
-          <Route path="/password-reset/:resetCode" exact element={<PasswordReset />} /> */}
-          {/* <Route path="/user" element={<User />}>
-            <Route path="/user/" element={<Navigate replace to="/user/dashboard" />} />
-            <Route path="/user/dashboard" element={<Dashboard />} />
-            <Route path="/user/transactions" element={<Transactions />} />
+          <Route path="/signup/:inviteCode" exact element={<Signup />} />
+          <Route path="/password-reset" exact element={<RequestPasswordReset />} />
+          <Route path="/password-reset/:resetCode" exact element={<ResetPassword />} />
+          <Route path="/user" element={<User />}>
+            <Route path="/user/" element={<Navigate replace to="/user/home" />} />
+            <Route path="/user/home" element={<Home />} />
+            {/* <Route path="/user/transactions" element={<Transactions />} />
             <Route path="/user/support" element={<SupportTickets />} />
             <Route path="/user/profile-settings" element={<ProfileSettings />} /> */}
             
@@ -60,7 +47,7 @@ function App() {
               <Route path="/admin/settings/team" element={<Team />} />
               <Route path="/admin/settings/security" element={<Security />} />
             </Route> */}
-          {/* </Route> */}
+          </Route>
         </Routes>
       </ScrollToTop>
     </Provider>

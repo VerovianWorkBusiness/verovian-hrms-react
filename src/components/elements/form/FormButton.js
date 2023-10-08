@@ -6,7 +6,7 @@ const FormButton = ({buttonLabel, buttonAction, processing}) => {
     <button 
       onClick={()=>{buttonAction()}} 
       disabled={processing}
-      className='w-full p-3 rounded bg-verovian-purple hover:bg-black border border-transparent dark:hover:bg-kt-navy-dark font-outfit text-white text-md transition duration-200 flex items-center justify-center'>
+      className='w-full p-4 rounded-md bg-verovian-purple text-verovian-light-purple font-medium hover:bg-[#000] border border-transparent text-md transition duration-200 flex items-center justify-center'>
         {processing ? <InlinePreloader /> : buttonLabel}
       </button>
   )

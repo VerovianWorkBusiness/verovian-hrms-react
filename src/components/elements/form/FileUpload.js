@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import React, { useState } from 'react'
 import { FileUploader } from "react-drag-drop-files";
 import { useDispatch } from 'react-redux';
+import { ERROR } from '../../../store/types';
 import UploadIcon from '../icons/UploadIcon';
-// import { ERROR } from '../../../store/types';
 
 const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preAddedFileName, acceptedFormats}) => {
   // const [file, setFile] = useState(null)
@@ -98,7 +97,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
               {uploadedFile &&  (
                   fileExt === 'jpeg' || fileExt === 'png' || fileExt === 'jpg' 
                   ?
-                  <Image alt="" className="h-[70px] ml-3 mb-3 border-2 rounded-lg border-black" src={uploadedFile} /> 
+                  <img alt="" className="h-[70px] ml-3 mb-3 border-2 rounded-lg border-black" src={uploadedFile} /> 
                   :
                   <div className='h-[75px] mb-3 w-[70px] ml-3 border-2 rounded-lg border-black flex items-center justify-center'>
                       <p className='text-sm font-tomato font-medium text-black'>.{fileExt}</p>
@@ -109,7 +108,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
                   ?
                   <>
                     <a href={preAddedFile} target="_blank" rel="noreferrer">
-                      <Image alt="" className="h-[70px] border-2 border-black" src={preAddedFile} /> 
+                      <img alt="" className="h-[70px] border-2 border-black" src={preAddedFile} /> 
                     </a>
                     <p className="text-xs px-0 mt-3 lg:px-4 text-black w-full">
                       File name: <span className='font-medium'>{preAddedFileName.split('/').pop()}</span>

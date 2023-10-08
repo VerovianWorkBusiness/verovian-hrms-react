@@ -25,7 +25,7 @@ const TextField = ({inputLabel, inputPlaceholder, fieldId, preloadValue, inputTy
             <input 
                 id={fieldId} 
                 type={hiddenInput && inputType === 'password' ? inputType : "text"} 
-                className={`font-montserrat mt-2 outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm  focus:border-black ${hasError && 'border-red-600'}`}
+                className={`font-montserrat mt-2 outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`}
                 value={fieldValue}
                 disabled={disabled}
                 placeholder={inputPlaceholder || ''}

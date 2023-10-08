@@ -1,13 +1,71 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // import baseUrl from "@/utils/baseUrl";
 
 import Logo from '../../assets/img/logo.png'
 import TextField from '../../components/elements/form/TextField';
+import FormButton from '../../components/elements/form/FormButton';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { ERROR } from '../../store/types';
 
 const Login = () => {
     const [authPayload, setAuthPayload] = useState({});
     const [validationErrors, setValidationErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const validateForm = () => {
+        let errors = {}
+        if (!authPayload.email || authPayload.email === '') {
+            errors.email = true
+        }
+        if (!authPayload.password || authPayload.password === '') {
+            errors.password = true
+        }
+
+        setValidationErrors(errors)
+        return errors
+    }
+
+    const logInUser = async () => {
+        if (Object.values(validateForm()).includes(true)) {
+            dispatch({
+                type: ERROR,
+                error: {response: {data: {
+                    message: 'Please check the highlighted fields'
+                }}}
+            });
+            return
+        }
+        
+        setProcessing(true)
+
+        const requestPayload = {
+            email: authPayload.email,
+            password: authPayload.password,
+        }
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/sessions`, requestPayload)
+            localStorage.setItem("accessToken", JSON.stringify(response.data.data.accessToken));
+            navigate('user')
+            // if(queryValues.returnUrl && queryValues.returnUrl !== '') {
+            //     navigate(queryValues.returnUrl)
+            // } else {
+            //     navigate("/admin");
+            // }
+
+        } catch (error) {
+            console.log(error.response)
+            dispatch({
+                type: ERROR,
+                error: error
+            });
+            setProcessing(false)
+        }
+    }
     return (
         <div className="w-full flex items-center justify-center h-screen">
             <div className="w-4/12 p-10 rounded border">
@@ -43,12 +101,7 @@ const Login = () => {
 
 
                 <div className='animate__animated animate__fadeIn mb-4 mt-8 w-full'>
-                    {/* <FormButton buttonLabel="Login to your account" buttonAction={()=>{logInUser()}} /> */}
-                    <Link href="">
-                        <button className='w-full p-3 rounded bg-verovian-purple text-verovian-light-purple hover:bg-black border border-transparent dark:hover:bg-black text-md transition duration-200 flex items-center justify-center'>
-                        Login to your account
-                        </button>
-                    </Link>
+                    <FormButton buttonLabel="Login to your account" buttonAction={()=>{logInUser()}} processing={processing} />
                 </div>
                 
                 <div className='animate__animated animate__fadeIn w-full text-center mt-3'>
