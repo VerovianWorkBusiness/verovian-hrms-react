@@ -31,7 +31,7 @@ export const createGroup = (walletPayload) => async (dispatch) => {
 export const fetchGroups = (pagination, filters, sort, action) => async dispatch => {    
     try{
         const headers = authHeader()
-        let requestUrl = 'groups'
+        let requestUrl = 'groups?expand=department'
         // if(userPermissions().includes('wallets.list.self') && !userPermissions().includes('wallets.*')) {
         //     requestUrl = 'wallets/self'
         // }
@@ -47,12 +47,12 @@ export const fetchGroups = (pagination, filters, sort, action) => async dispatch
         // }
 
 
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}}`, { headers })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
         // const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}?expand=custodian&limit=${pagination.perPage}&page=${pagination.page}&${appliedFilters}&${applySort(sort)}`, { headers })
 
         dispatch( {
             type: GET_GROUPS,
-            payload: response.data
+            payload: response.data.data.groups
         })
         
     }

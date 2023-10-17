@@ -15,7 +15,7 @@ const NewDepartment = () => {
 
   const validateForm = () => {
     let errors = {}
-      if (!departmentPayload.name || departmentPayload.email === '') {
+      if (!departmentPayload.name || departmentPayload.name === '') {
           errors.name = true
       }
 

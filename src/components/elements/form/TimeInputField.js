@@ -15,15 +15,15 @@ const TimeInputField = ({inputLabel, fieldId, inputType, hasError, preloadValue,
             className={`w-full relative`} 
         >
             <label 
-            className={`cursor-text bg-transparent text-sm z-10 font-outfit font-medium transition duration-200  
-            ${hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-500'}`}>
+            className={`font-montserrat cursor-text bg-transparent text-sm z-10 font-outfit font-medium transition duration-200  
+            ${hasError ? 'text-red-600' : 'text-gray-500'}`}>
                 {inputLabel}
             </label>
 
             <TimeField
                 value={fieldValue}                      
                 onChange={(event, value) => {setValue(value)}}
-                input={<input id={fieldId} type='text' className={`mt-2 outline-none bg-transparent w-full cursor-text border p-4 relative z-0 border-gray-400 dark:border-gray-500 dark:focus:border-gray-500 placeholder:text-gray-400 placeholder:text-sm dark:placeholder:text-gray-600 focus:border-black dark:text-white ${hasError && 'border-red-600 dark:border-red-400'}`} />}   
+                input={<input id={fieldId} type='text' className={`font-montserrat mt-2 outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`} />}   
                 colon=":"                
                 showSeconds={false}
             />

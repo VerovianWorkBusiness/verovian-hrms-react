@@ -17,11 +17,15 @@ import Designations from './pages/user/company/designations/Designations';
 import Shifts from './pages/user/company/shifts/Shifts';
 import Employees from './pages/user/employees/Employees';
 import NewEmployee from './pages/user/employees/NewEmployee';
+import SuccessNotifier from './components/elements/SuccessNotifier';
+import NewShift from './pages/user/company/shifts/NewShift';
+import ShiftDetails from './pages/user/company/shifts/ShiftDetails';
 
 function App() {
   return (
     <Provider store={store}>
 
+        <SuccessNotifier />
         <ErrorNotifier />
         <ScrollToTop >
         
@@ -39,8 +43,11 @@ function App() {
               <Route path="/user/company/groups" element={<Groups />} />
               <Route path="/user/company/designations" element={<Designations />} />
               <Route path="/user/company/shifts" element={<Shifts />} />
+              {/* <Route path="/user/company/details/:shiftId" element={<ShiftDetails />} /> */}
+              <Route path="/user/company/shifts/details/:shiftId" element={<NewShift />} />
+              <Route path="/user/company/shifts/new-shift" element={<NewShift />} />
             </Route>
-            <Route path="/user/employees" element={<Employees />} />
+            <Route path="/user/employeess" element={<Employees />} />
             <Route path="/user/employees/new-employee" element={<NewEmployee />} />
             {/* <Route path="/user/transactions" element={<Transactions />} />
             <Route path="/user/support" element={<SupportTickets />} />

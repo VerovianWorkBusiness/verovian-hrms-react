@@ -1,8 +1,8 @@
 import { CREATE_GROUP, CREATING_GROUP, GETTING_GROUPS, GET_GROUPS, GROUPS_ERROR } from "../types"
 
 const initialState = {
-    groups: null,
-    loadingGroups: false,
+    groups: [],
+    loadingGroups: true,
     groupsError: null,
     creatingGroup: false,
     createdGroup: null
@@ -42,7 +42,6 @@ export default function(state = initialState, action){
         return{
             ...state,
             loadingGroups:false,
-            groups: null,
             groupsError: action.payload 
         }
         default: return state

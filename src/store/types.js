@@ -9,12 +9,19 @@ export const CREATE_DEPARTMENT = 'CREATE_DEPARTMENT';
 export const CREATING_DEPARTMENT = 'GETTING_DEPARTMENTS';
 export const DEPARTMENTS_ERROR = 'DEPARTMENTS_ERROR';
 
-// Departments
+// Groups
 export const GET_GROUPS = 'GET_GROUPS';
 export const GETTING_GROUPS = 'GETTING_GROUPS';
 export const CREATE_GROUP = 'CREATE_GROUP';
 export const CREATING_GROUP = 'CREATING_GROUP';
 export const GROUPS_ERROR = 'GROUPS_ERROR';
+
+// Shifts
+export const GET_SHIFTS = 'GET_SHIFTS';
+export const GETTING_SHIFTS = 'GETTING_SHIFTS';
+export const CREATE_SHIFT = 'CREATE_SHIFT';
+export const CREATING_SHIFT = 'CREATING_SHIFT';
+export const SHIFTS_ERROR = 'SHIFTS_ERROR';
 
 // Designations
 export const GET_DESIGNATIONS = 'GET_DESIGNATIONS';
@@ -35,3 +42,7 @@ export const EMPLOYEES_ERROR = 'EMPLOYEES_ERROR';
 // Errors
 export const ERROR = 'ERROR'
 export const CLEAR_ERROR = 'CLEAR_ERROR'
+
+// Success
+export const SET_SUCCESS_MESSAGE = 'SET_SUCCESS_MESSAGE'
+export const CLEAR_SUCCESS_MESSAGE = 'CLEAR_SUCCESS_MESSAGE'

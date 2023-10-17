@@ -5,19 +5,19 @@ import FormButton from '../../elements/form/FormButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { ERROR } from '../../../store/types'
 import SelectField from '../../elements/form/SelectField'
-import { createDesignation } from '../../../store/actions/designationActions'
+import { createGroup } from '../../../store/actions/groupActions'
 
-const NewDesignation = () => {
+const NewGroup = () => {
     const dispatch = useDispatch()
     const departmentsState = useSelector(state => state.departments)
-    const designationsState = useSelector(state => state.designations)
+    const groupsState = useSelector(state => state.groups)
 
-    const [designationPayload, setDesignationPayload] = useState({});
+    const [groupPayload, setGroupPayload] = useState({});
     const [validationErrors, setValidationErrors] = useState({});
 
     const validateForm = () => {
         let errors = {}
-        if (!designationPayload.name || designationPayload.name === '') {
+        if (!groupPayload.name || groupPayload.name === '') {
             errors.name = true
         }
 
@@ -35,20 +35,19 @@ const NewDesignation = () => {
         });
         return
         }
-        dispatch(createDesignation(designationPayload))
+        dispatch(createGroup(groupPayload))
     }
-
     return (
         <div>
             <div>
                 <div className='my-8 w-full'>
                     <TextField
-                        inputLabel="Designation name" 
-                        fieldId="dept-name" 
+                        inputLabel="Group name" 
+                        fieldId="group-name" 
                         inputType="text" 
                         preloadValue={''}
                         hasError={validationErrors.name} 
-                        returnFieldValue={(value)=>{setDesignationPayload({...designationPayload, ...{name: value}})}}
+                        returnFieldValue={(value)=>{setGroupPayload({...groupPayload, ...{name: value}})}}
                     />
                 </div>
                 <div className='mt-3 w-full'>
@@ -62,7 +61,7 @@ const NewDesignation = () => {
                         fieldId="designation-department"
                         hasError={false}
                         // return id of accounts of the selected option
-                        returnFieldValue={(value) => {setDesignationPayload({...designationPayload, ...{department: value._id}})}}
+                        returnFieldValue={(value) => {setGroupPayload({...groupPayload, ...{department: value._id}})}}
                     />
                 </div>
                 <div className='my-8 w-full'>
@@ -72,16 +71,16 @@ const NewDesignation = () => {
                         inputType="text" 
                         preloadValue={''}
                         hasError={false} 
-                        returnFieldValue={(value)=>{setDesignationPayload({...designationPayload, ...{description: value}})}}
+                        returnFieldValue={(value)=>{setGroupPayload({...groupPayload, ...{description: value}})}}
                     />
                 </div>
 
                 <div className='my-8 flex flex-row-reverse items-center justify-between'>
                     <div className='w-full'>
                     <FormButton 
-                        buttonLabel={`Create Designation`} 
+                        buttonLabel={`Create Group`} 
                         buttonAction={()=>{triggerCreateDesignation()}} 
-                        processing={designationsState.creatingDesignation}
+                        processing={groupsState.creatingGroup}
                     />
                     </div>
                 </div>
@@ -90,4 +89,4 @@ const NewDesignation = () => {
     )
 }
 
-export default NewDesignation
+export default NewGroup

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDepartments } from '../../../../store/actions/departmentActions';
 import Preloader from '../../../../components/elements/Preloader';
 import EmptyState from '../../../../components/elements/icons/EmptyState';
+import TrashIcon from '../../../../components/elements/icons/TrashIcon';
+import { SET_SUCCESS_MESSAGE } from '../../../../store/types';
 
 const Departments = () => {
     const dispatch = useDispatch()
@@ -17,6 +19,10 @@ const Departments = () => {
     useEffect(() => {
         dispatch(fetchDepartments())
         if(departmentsState.createdDepartment && departmentsState.createdDepartment !== null) {
+            dispatch({
+                type: SET_SUCCESS_MESSAGE,
+                payload: 'Department created successfully!'
+            })
             dispatch(fetchDepartments())
             setCreatingDepartment(false)
         }
@@ -24,78 +30,6 @@ const Departments = () => {
             
         };
     }, [dispatch, departmentsState.createdDepartment]);
-//     const departments = [
-//       {
-//           label: "Finance",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Commercial",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Information Technology",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "HSSE",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "QMS",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Projects",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Human Resources & Admin",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Hudson Petroleum",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Shoreline Logistics",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//       {
-//           label: "Hudson Petroleum",
-//           description: "Question Marks and devious Semikoli, but the Little Blind Text didn't listen",
-//           ongoingProjects: 5,
-//           personnel: 12,
-//           headedBy: "Andre Johnson"
-//       },
-//   ]
 
   return (
     <>
@@ -120,7 +54,11 @@ const Departments = () => {
                     <>
                         {departmentsState?.departments.length > 0 ? <div className='w-full grid grid-cols-3 gap-8'>
                             {departmentsState?.departments.map((dept, deptIndex) => ( 
-                                <div key={deptIndex} className='w-full p-10 bg-white bg-opacity-50'>
+                                <div key={deptIndex} className='w-full p-10 bg-white bg-opacity-50 relative'>
+
+                                    <button className='transition duration-200 hover:text-gray-700 p-1 text-gray-400 rounded absolute top-3 right-4'>
+                                        <TrashIcon className={`w-5 h-5`} />
+                                    </button>
                                     <h3 className='text-lg text-black'>{dept.name}</h3>
                                     <p className='mb-5 mt-2 text-sm'>Headed by: {dept.headedBy ? dept.headedBy : <span className='h-[15px] w-[100px] bg-gray-200 animate-pulse inline-block ml-2'></span>}</p>
                                     <p className="text-sm text-gray-500 mb-5">{dept.description}</p>

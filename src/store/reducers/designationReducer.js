@@ -23,7 +23,7 @@ export default function(state = initialState, action){
             ...state,
             loadingDesignations: false,
             designationsError: false,
-            groups: action.payload,
+            designations: action.payload,
         }
         case CREATING_DESIGNATION:
         return {

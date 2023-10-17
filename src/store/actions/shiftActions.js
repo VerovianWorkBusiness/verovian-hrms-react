@@ -1,19 +1,19 @@
 import axios from "axios"
 import { authHeader } from "../../utils"
-import { CREATE_DESIGNATION, CREATING_DESIGNATION, DESIGNATIONS_ERROR, GETTING_DESIGNATIONS, GET_DESIGNATIONS } from "../types"
+import { CREATE_SHIFT, CREATING_SHIFT, GETTING_SHIFTS, GET_SHIFTS, SHIFTS_ERROR } from "../types"
 
-export const createDesignation = (designationPayload) => async (dispatch) => {    
+export const createShift = (shiftPayload) => async (dispatch) => {    
     try{
         const headers = authHeader()
 
         dispatch({
-            type: CREATING_DESIGNATION,
+            type: CREATING_SHIFT,
             payload: true
         })
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/designations`, designationPayload, { headers })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/shifts`, shiftPayload, { headers })
         
         dispatch({
-            type: CREATE_DESIGNATION,
+            type: CREATE_SHIFT,
             payload: response.data.data
         })
         
@@ -21,23 +21,23 @@ export const createDesignation = (designationPayload) => async (dispatch) => {
     catch(error){
         // console.log(error)
         dispatch({
-            type: DESIGNATIONS_ERROR,
+            type: SHIFTS_ERROR,
             // payload: error.response.data
             error
         })
     }
 }
 
-export const fetchDesignations = (pagination, filters, sort, action) => async dispatch => {    
+export const fetchShifts = (pagination, filters, sort, action) => async dispatch => {    
     try{
         const headers = authHeader()
-        let requestUrl = 'designations?expand=department'
+        let requestUrl = 'shifts'
         // if(userPermissions().includes('wallets.list.self') && !userPermissions().includes('wallets.*')) {
         //     requestUrl = 'wallets/self'
         // }
 
         dispatch( {
-            type: GETTING_DESIGNATIONS,
+            type: GETTING_SHIFTS,
             payload: true
         })
 
@@ -51,14 +51,14 @@ export const fetchDesignations = (pagination, filters, sort, action) => async di
         // const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}?expand=custodian&limit=${pagination.perPage}&page=${pagination.page}&${appliedFilters}&${applySort(sort)}`, { headers })
 
         dispatch( {
-            type: GET_DESIGNATIONS,
-            payload: response.data.data.designations
+            type: GET_SHIFTS,
+            payload: response.data.data.shifts
         })
         
     }
     catch(error){
         dispatch( {
-            type: DESIGNATIONS_ERROR,
+            type: SHIFTS_ERROR,
             // payload: error.response.data,
             error
         })
