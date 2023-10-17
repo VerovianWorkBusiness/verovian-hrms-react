@@ -75,7 +75,7 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
             {/* Text input */}
             <input 
                 type={"text"} 
-                className={`mt-2 text-sm outline-none bg-transparent w-full cursor-text border p-3 relative z-0 border-gray-400 dark:border-gray-500 dark:focus:border-gray-500 placeholder:text-gray-400 placeholder:text-sm dark:placeholder:text-gray-600 focus:border-black dark:text-white ${hasError && 'border-red-600 dark:border-red-400'}`}
+                className={`mt-2 text-sm outline-none bg-transparent w-full cursor-text border px-3 py-4 rounded relative z-0 border-gray-400 dark:border-gray-500 dark:focus:border-gray-500 placeholder:text-gray-400 placeholder:text-sm dark:placeholder:text-gray-600 focus:border-black dark:text-white ${hasError && 'border-red-600 dark:border-red-400'}`}
                 disabled={disabled}
                 onClick={()=>{openOptions()}} 
                 onChange={()=>{}}

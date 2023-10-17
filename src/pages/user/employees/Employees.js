@@ -1,11 +1,11 @@
-import DataTable from '@/components/DataTable'
-import Status from '@/components/Status'
-import EmployeeSnippet from '@/components/employees/EmployeeSnippet'
-import PlusIcon from '@/components/icons/PlusIcon'
-import UserLayout from '@/components/layouts/UserLayout'
-import { tableHeadersFields } from '@/utils/utils'
-import Link from 'next/link'
 import React from 'react'
+import UserLayout from '../../../components/layout/UserLayout'
+import PlusIcon from '../../../components/elements/icons/PlusIcon'
+import { Link } from 'react-router-dom'
+import DataTable from '../../../components/elements/DataTable'
+import EmployeeSnippet from '../../../components/partials/employees/EmployeeSnippet'
+import { tableHeadersFields } from '../../../utils'
+import Status from '../../../components/elements/Status'
 
 const Employees = () => {
     const employees = [
@@ -81,7 +81,6 @@ const Employees = () => {
 
         return data
     }
-
     return (
         <UserLayout pageTitle={`Employee Management`}>
             <div className=''>
@@ -91,7 +90,7 @@ const Employees = () => {
                         <div className='flex justify-between items-center mt-4 mb-4'>
                             <h3 className='font-medium text-lg text-gray-400'>Verovian Employees</h3>
 
-                            <Link href={`new-employee`}>
+                            <Link to={`new-employee`}>
                                 <button className='flex gap-x-2 items-center rounded bg-verovian-purple px-3 py-3 text-white text-[13px] transition duration-200 hover:bg-blue-800'>
                                     <PlusIcon className={`h-5 w-5`} />
                                     Onboard an employee
@@ -104,7 +103,7 @@ const Employees = () => {
                         </div> */}
 
                         <div className='w-full'>
-                            <DataTable
+                            <DataTable                                
                                 tableHeaders={tableHeadersFields(cleanupData(employees)[0])?.headers} 
                                 tableData={cleanupData(employees)} 
                                 columnWidths={columnWidths}

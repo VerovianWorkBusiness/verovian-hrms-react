@@ -5,22 +5,18 @@ import store from "./store/store";
 import ErrorNotifier from './components/elements/ErrorNotifier';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/auth/Login';
-// import AccountActivation from './pages/onboarding/AccountActivation';
-// import User from './pages/User';
-// import PasswordResetRequest from './pages/auth/PasswordResetRequest';
-// import PasswordReset from './pages/auth/PasswordReset';
-// import Dashboard from './pages/user/Dashboard';
-// import CreateAccount from './pages/onboarding/CreateAccount';
-// import 'animate.css';
-// import Transactions from './pages/user/Transactions';
-// import SupportTickets from './pages/user/support/SupportTickets';
-// import ProfileSettings from './pages/user/ProfileSettings';
 import ScrollToTop from './components/layout/ScrollToTop';
 import Signup from './pages/onboarding/Signup';
 import RequestPasswordReset from './pages/auth/RequestPasswordReset';
 import ResetPassword from './pages/auth/ResetPassword';
 import User from './pages/User';
 import Home from './pages/user/home';
+import Departments from './pages/user/company/departments/Departments';
+import Groups from './pages/user/company/groups/Groups';
+import Designations from './pages/user/company/designations/Designations';
+import Shifts from './pages/user/company/shifts/Shifts';
+import Employees from './pages/user/employees/Employees';
+import NewEmployee from './pages/user/employees/NewEmployee';
 
 function App() {
   return (
@@ -37,6 +33,15 @@ function App() {
           <Route path="/user" element={<User />}>
             <Route path="/user/" element={<Navigate replace to="/user/home" />} />
             <Route path="/user/home" element={<Home />} />
+            <Route path="/user/company">
+              <Route path="/user/company/" element={<Navigate replace to="/user/company/departments" />} />
+              <Route path="/user/company/departments" element={<Departments />} />
+              <Route path="/user/company/groups" element={<Groups />} />
+              <Route path="/user/company/designations" element={<Designations />} />
+              <Route path="/user/company/shifts" element={<Shifts />} />
+            </Route>
+            <Route path="/user/employees" element={<Employees />} />
+            <Route path="/user/employees/new-employee" element={<NewEmployee />} />
             {/* <Route path="/user/transactions" element={<Transactions />} />
             <Route path="/user/support" element={<SupportTickets />} />
             <Route path="/user/profile-settings" element={<ProfileSettings />} /> */}

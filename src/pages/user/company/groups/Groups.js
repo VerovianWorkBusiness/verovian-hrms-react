@@ -1,6 +1,6 @@
-import CompanyPageLayout from '@/components/layouts/CompanyPageLayout'
-import UserLayout from '@/components/layouts/UserLayout'
 import React from 'react'
+import CompanyPageLayout from '../../../../components/layout/CompanyPageLayout'
+import UserLayout from '../../../../components/layout/UserLayout'
 
 const Groups = () => {
   return (
