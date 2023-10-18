@@ -19,8 +19,12 @@ export const GROUPS_ERROR = 'GROUPS_ERROR';
 // Shifts
 export const GET_SHIFTS = 'GET_SHIFTS';
 export const GETTING_SHIFTS = 'GETTING_SHIFTS';
+export const GET_SHIFT_DETAILS = 'GET_SHIFT_DETAILS';
+export const GETTING_SHIFT_DETAILS = 'GETTING_SHIFT_DETAILS';
 export const CREATE_SHIFT = 'CREATE_SHIFT';
 export const CREATING_SHIFT = 'CREATING_SHIFT';
+export const UPDATE_SHIFT = 'UPDATE_SHIFT';
+export const UPDATING_SHIFT = 'UPDATING_SHIFT';
 export const SHIFTS_ERROR = 'SHIFTS_ERROR';
 
 // Designations

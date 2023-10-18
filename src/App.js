@@ -44,10 +44,10 @@ function App() {
               <Route path="/user/company/designations" element={<Designations />} />
               <Route path="/user/company/shifts" element={<Shifts />} />
               {/* <Route path="/user/company/details/:shiftId" element={<ShiftDetails />} /> */}
-              <Route path="/user/company/shifts/details/:shiftId" element={<NewShift />} />
+              <Route path="/user/company/shifts/details/:shiftId" element={<ShiftDetails />} />
               <Route path="/user/company/shifts/new-shift" element={<NewShift />} />
             </Route>
-            <Route path="/user/employeess" element={<Employees />} />
+            <Route path="/user/employees" element={<Employees />} />
             <Route path="/user/employees/new-employee" element={<NewEmployee />} />
             {/* <Route path="/user/transactions" element={<Transactions />} />
             <Route path="/user/support" element={<SupportTickets />} />

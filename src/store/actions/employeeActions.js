@@ -57,7 +57,7 @@ export const signupEmployee = (designationPayload) => async (dispatch) => {
 export const fetchEmployees = (pagination, filters, sort, action) => async dispatch => {    
     try{
         const headers = authHeader()
-        let requestUrl = 'designations'
+        let requestUrl = 'employees?expand=designation,department'
         // if(userPermissions().includes('wallets.list.self') && !userPermissions().includes('wallets.*')) {
         //     requestUrl = 'wallets/self'
         // }
@@ -73,12 +73,12 @@ export const fetchEmployees = (pagination, filters, sort, action) => async dispa
         // }
 
 
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}}`, { headers })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
         // const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}?expand=custodian&limit=${pagination.perPage}&page=${pagination.page}&${appliedFilters}&${applySort(sort)}`, { headers })
 
         dispatch( {
             type: GET_EMPLOYEES,
-            payload: response.data
+            payload: response.data.data.employees
         })
         
     }

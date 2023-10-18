@@ -30,7 +30,7 @@ const DataTable = ({
 
     useEffect(() => {
         setAllItems(tableData)
-    }, []);
+    }, [tableData]);
     
 
     const toggleAllSelection = () => {
@@ -202,7 +202,7 @@ const DataTable = ({
                                     {tableHeaders.map((header, headerIndex) => (
                                         !header.forPopover && fieldIsSelected(header.columnDisplayName) &&                                  
                                         <li key={headerIndex} className={`${columnWidths[header.column]}`} >
-                                            <span className='w-full flex flex-row items-center block'>
+                                            <span className='w-full flex flex-row items-center'>
                                                 <span className={columnDataStyles[header.column] && columnDataStyles[header.column].isConditional ? columnDataStyles[header.column].conditionals[data[header.column]] : columnDataStyles[header.column]}>
                                                     {header.columnDataType === 'image' &&
                                                     <img src={data[header.column]} alt="" />

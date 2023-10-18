@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserLayout from '../../../components/layout/UserLayout'
 import PlusIcon from '../../../components/elements/icons/PlusIcon'
 import { Link } from 'react-router-dom'
@@ -6,46 +6,21 @@ import DataTable from '../../../components/elements/DataTable'
 import EmployeeSnippet from '../../../components/partials/employees/EmployeeSnippet'
 import { tableHeadersFields } from '../../../utils'
 import Status from '../../../components/elements/Status'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchEmployees } from '../../../store/actions/employeeActions'
+import Preloader from '../../../components/elements/Preloader'
+import EmptyState from '../../../components/elements/icons/EmptyState'
 
 const Employees = () => {
-    const employees = [
-        {
-            id: "UR7365478",
-            email: "bram-stoker@verovian.com",
-            firstName: 'Frederick',
-            middleName: "",
-            lastName: 'Kreuger',
-            designation: 'Assistant Director',
-            department: 'Human Resources',
-            phone: '08045712589',
-            dateJoined: '21/11/2021',
-            systemStatus: 'profiled'
-        },
-        {
-            id: "UR7365478",
-            email: "bram-stoker@verovian.com",
-            firstName: 'Bram',
-            middleName: "",
-            lastName: 'Stoker',
-            designation: 'Executive Assistant',
-            department: 'Human Resources',
-            phone: '08045712589',
-            dateJoined: '21/11/2021',
-            systemStatus: 'profiled'
-        },
-        {
-            id: "ZT60097354",
-            email: "bram-stoker@verovian.com",
-            firstName: 'Florence',
-            middleName: "",
-            lastName: 'Nightingale',
-            designation: 'Trainee',
-            department: 'Information Technology',
-            phone: '08045712589',
-            dateJoined: '21/11/2021',
-            systemStatus: 'not-profiled'
-        },
-    ]
+    const dispatch = useDispatch()
+    const employeesState = useSelector(state => state.employees)
+
+    useEffect(() => {
+        dispatch(fetchEmployees())
+        return () => {
+        
+        };
+    }, [dispatch]);
 
     const tableOptions = {
         selectable: false,
@@ -69,12 +44,12 @@ const Employees = () => {
         dataSet.forEach((item, itemIndex) => {
         data.push(
             {
-                id: item.id,
+                id: item.employeeId || '',
                 employee: <EmployeeSnippet showIcon={true} name={`${item.firstName} ${item.lastName}`} phone={item.phone} email={item.email} />,
-                designation: item.designation,
-                department: item.department,
+                designation: item.designation.name,
+                department: item.department.name,
                 dateJoined: item.dateJoined,
-                systemStatus: <Status status={item.systemStatus} />, //<OrderPaymentStatus status={item.paymentStatus} />,
+                systemStatus: <Status status={item.userProfile ? 'profiled' : 'not-profiled'} />, //<OrderPaymentStatus status={item.paymentStatus} />,
             },
         )
         })
@@ -103,24 +78,34 @@ const Employees = () => {
                         </div> */}
 
                         <div className='w-full'>
-                            <DataTable                                
-                                tableHeaders={tableHeadersFields(cleanupData(employees)[0])?.headers} 
-                                tableData={cleanupData(employees)} 
-                                columnWidths={columnWidths}
-                                columnDataStyles={{}}
-                                allFields={tableHeadersFields(cleanupData(employees)[0]).fields}
-                                onSelectItems={()=>{}}
-                                tableOptions={tableOptions}
-                                // pagination={{
-                                //     perPage: 25, 
-                                //     currentPage: 1,
-                                //     totalItems: 476,
-                                // }}
-                                changePage={()=>{}}
-                                updatePerPage={()=>{}}
-                                // expandedIndex={rowOpen || ''}
-                                // expansion={<OrderExpansion orders={orders} rowOpen={rowOpen} />}
-                            />
+                        {employeesState?.loadingEmployees && employeesState.loadingEmployees === true ? 
+                            <Preloader preloadingText={'Loading employees... '} />
+                            : 
+                            <>
+                                {employeesState?.employees.length > 0 ? 
+                                    <DataTable                                
+                                        tableHeaders={tableHeadersFields(cleanupData(employeesState.employees)[0])?.headers} 
+                                        tableData={cleanupData(employeesState.employees)} 
+                                        columnWidths={columnWidths}
+                                        columnDataStyles={{}}
+                                        allFields={tableHeadersFields(cleanupData(employeesState.employees)[0]).fields}
+                                        onSelectItems={()=>{}}
+                                        tableOptions={tableOptions}
+                                        // pagination={{
+                                        //     perPage: 25, 
+                                        //     currentPage: 1,
+                                        //     totalItems: 476,
+                                        // }}
+                                        changePage={()=>{}}
+                                        updatePerPage={()=>{}}
+                                        // expandedIndex={rowOpen || ''}
+                                        // expansion={<OrderExpansion orders={orders} rowOpen={rowOpen} />}
+                                    />
+                                    :
+                                    <EmptyState emptyStateText={`No employees created yet. Click on the "Onboard employee" button above to create one`} />
+                                }
+                            </>
+                        }
                         </div>
 
                     </div>

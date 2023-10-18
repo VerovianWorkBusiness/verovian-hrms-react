@@ -1,7 +1,7 @@
 import { EMPLOYEES_ERROR, GETTING_EMPLOYEES, GET_EMPLOYEES, INVITE_EMPLOYEE, INVITING_EMPLOYEE, SIGNING_UP_EMPLOYEE, SIGNUP_EMPLOYEE } from "../types"
 
 const initialState = {
-    employees: null,
+    employees: [],
     loadingEmployees: false,
     employeesError: null,
     invitingEmployee: false,

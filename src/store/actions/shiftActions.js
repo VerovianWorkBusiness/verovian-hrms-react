@@ -1,6 +1,6 @@
 import axios from "axios"
 import { authHeader } from "../../utils"
-import { CREATE_SHIFT, CREATING_SHIFT, GETTING_SHIFTS, GET_SHIFTS, SHIFTS_ERROR } from "../types"
+import { CREATE_SHIFT, CREATING_SHIFT, GETTING_SHIFTS, GETTING_SHIFT_DETAILS, GET_SHIFTS, GET_SHIFT_DETAILS, SHIFTS_ERROR } from "../types"
 
 export const createShift = (shiftPayload) => async (dispatch) => {    
     try{
@@ -60,6 +60,32 @@ export const fetchShifts = (pagination, filters, sort, action) => async dispatch
         dispatch( {
             type: SHIFTS_ERROR,
             // payload: error.response.data,
+            error
+        })
+    }
+}
+
+export const fetchShiftDetails = (shiftId) => async dispatch => {    
+    try{
+        const headers = authHeader()
+        let requestUrl = `shifts/${shiftId}`
+
+        dispatch( {
+            type: GETTING_SHIFT_DETAILS,
+            payload: true
+        })
+
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}?expand=custodian&limit=${pagination.perPage}&page=${pagination.page}&${appliedFilters}&${applySort(sort)}`, { headers })
+        dispatch( {
+            type: GET_SHIFT_DETAILS,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        dispatch( {
+            type: SHIFTS_ERROR,
             error
         })
     }
