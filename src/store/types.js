@@ -16,6 +16,13 @@ export const CREATE_GROUP = 'CREATE_GROUP';
 export const CREATING_GROUP = 'CREATING_GROUP';
 export const GROUPS_ERROR = 'GROUPS_ERROR';
 
+// holidays
+export const GET_HOLIDAYS = 'GET_HOLIDAYS';
+export const GETTING_HOLIDAYS = 'GETTING_HOLIDAYS';
+export const CREATE_HOLIDAY = 'CREATE_HOLIDAY';
+export const CREATING_HOLIDAY = 'CREATING_HOLIDAY';
+export const HOLIDAYS_ERROR = 'HOLIDAYS_ERROR';
+
 // Shifts
 export const GET_SHIFTS = 'GET_SHIFTS';
 export const GETTING_SHIFTS = 'GETTING_SHIFTS';

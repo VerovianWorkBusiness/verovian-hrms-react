@@ -20,6 +20,7 @@ import NewEmployee from './pages/user/employees/NewEmployee';
 import SuccessNotifier from './components/elements/SuccessNotifier';
 import NewShift from './pages/user/company/shifts/NewShift';
 import ShiftDetails from './pages/user/company/shifts/ShiftDetails';
+import Holidays from './pages/user/holiday-management/Holidays';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               <Route path="/user/company/shifts/new-shift" element={<NewShift />} />
             </Route>
             <Route path="/user/employees" element={<Employees />} />
+            <Route path="/user/holiday-management" element={<Holidays />} />
             <Route path="/user/employees/new-employee" element={<NewEmployee />} />
             {/* <Route path="/user/transactions" element={<Transactions />} />
             <Route path="/user/support" element={<SupportTickets />} />

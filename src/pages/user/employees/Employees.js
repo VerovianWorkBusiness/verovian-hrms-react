@@ -65,7 +65,7 @@ const Employees = () => {
                         <div className='flex justify-between items-center mt-4 mb-4'>
                             <h3 className='font-medium text-lg text-gray-400'>Verovian Employees</h3>
 
-                            <Link to={`new-employee`}>
+                            <Link to={`new-employeee`}>
                                 <button className='flex gap-x-2 items-center rounded bg-verovian-purple px-3 py-3 text-white text-[13px] transition duration-200 hover:bg-blue-800'>
                                     <PlusIcon className={`h-5 w-5`} />
                                     Onboard an employee

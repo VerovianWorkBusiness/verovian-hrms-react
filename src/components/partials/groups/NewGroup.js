@@ -27,13 +27,13 @@ const NewGroup = () => {
     
     const triggerCreateDesignation = () => {
         if (Object.values(validateForm()).includes(true)) {
-        dispatch({
-            type: ERROR,
-            error: {response: {data: {
-                message: 'Please check the highlighted fields'
-            }}}
-        });
-        return
+            dispatch({
+                type: ERROR,
+                error: {response: {data: {
+                    message: 'Please check the highlighted fields'
+                }}}
+            });
+            return
         }
         dispatch(createGroup(groupPayload))
     }

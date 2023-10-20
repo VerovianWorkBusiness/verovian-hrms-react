@@ -6,6 +6,7 @@ import groupReducer from "./groupReducer";
 import successReducer from "./successReducer";
 import shiftReducer from "./shiftReducer";
 import employeeReducer from "./employeeReducer";
+import holidayReducer from "./holidayReducer";
 
 const rootReducer = combineReducers({
     // Add reducers here
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     departments: departmentReducer,
     designations: designationReducer,
     employees: employeeReducer,
+    holidays: holidayReducer,
 });
 
 export default rootReducer;
