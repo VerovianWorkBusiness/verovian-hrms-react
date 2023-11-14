@@ -23,8 +23,8 @@ const UserLayout = ({pageTitle, children}) => {
   const currentRoute = location.pathname;
   return (
     <div className='w-full'>
-        <div className='w-full flex items-start'>
-            <div className='w-2/12 p-[15px] shadow-xl min-h-screen relative bg-[#fff]'>
+        <div className='w-full flex items-start relative'>
+            <div className='w-2/12 p-[15px] shadow-xl min-h-screen bg-[#fff] fixed'>
               <div className='w-8/12 mb-6'>
                 <img src={Logo} alt="logo" width={150} />
               </div>
@@ -43,15 +43,19 @@ const UserLayout = ({pageTitle, children}) => {
                 </button>
               </Link>
 
-              <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
-                <NewspaperIcon className={`w-5 h-5 text-black`} />
-                <p className='text-sm font-medium'>News</p>
-              </div>
+              <Link to={`/user/news`}>
+                <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/news') && 'bg-verovian-light-purple'}`}>
+                  <NewspaperIcon className={`w-5 h-5 text-black`} />
+                  <p className='text-sm font-medium'>News</p>
+                </button>
+              </Link>
 
-              <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
-                <DocumentIcon className={`w-5 h-5 text-black`} />
-                <p className='text-sm font-medium'>Documents</p>
-              </div>
+              <Link to={`/user/documents`}>
+                <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/documents') && 'bg-verovian-light-purple'}`}>
+                  <DocumentIcon className={`w-5 h-5 text-black`} />
+                  <p className='text-sm font-medium'>Documents</p>
+                </button>
+              </Link>
 
               <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
                 <LightbulbIcon className={`w-5 h-5 text-black`} />
@@ -80,17 +84,17 @@ const UserLayout = ({pageTitle, children}) => {
                 <p className='text-sm font-medium'>Task Management</p>
               </div>
 
-              <Link to={`/user/holiday-management`}>
+              <Link to={`/user/leaves-holidays`}>
                 <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/holiday-management') && 'bg-verovian-light-purple'}`}>
                   <GlobeIcon className={`w-5 h-5 text-black`} />
-                  <p className='text-sm font-medium'>Holiday Management</p>
+                  <p className='text-sm font-medium'>Leaves & Holidays</p>
                 </button>
               </Link>
 
-              <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
+              {/* <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
                 <ClipboardIcon className={`w-5 h-5 text-black`} />
                 <p className='text-sm font-medium'>Contract</p>
-              </div>
+              </div> */}
 
               <div className='absolute bottom-[25px] w-[90%] border rounded-md bg-verovian-light-purple border-[#2D0048] p-2 flex items-center gap-x-2'>
                   <div className='w-[45px] h-[45px] rounded-full relative border' style={{backgroundImage: `url(${ProfileImage})`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', backgroundSize: 'cover'}}>
@@ -108,7 +112,7 @@ const UserLayout = ({pageTitle, children}) => {
               </div>
 
             </div>
-            <div className='w-10/12 min-h-screen h-inherit bg-[#F7F7F7]'>
+            <div className='w-10/12 min-h-screen h-inherit bg-[#F7F7F7] ml-auto'>
               <div className='w-full p-4 flex items-center justify-between'>
                 <p className='font-medium text-lg text-black'>{pageTitle || `Dashboard`}</p>
                 <div className='flex items-center gap-x-4'>

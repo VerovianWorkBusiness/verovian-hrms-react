@@ -88,7 +88,7 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
 
             {/* Options */}
             {optionsOpen && !disabled &&
-                <div className='absolute top-24 w-full left-0 py-2 px-2 border dark:border-none bg-white scrollbar-hidden overflow-y-scroll pt-10 z-40' style={{maxHeight: '550px', paddingBottom:'25px'}}>
+                <div className='absolute top-24 w-full left-0 py-2 px-2 border rounded-md border-gray-300 bg-white scrollbar-hidden overflow-y-scroll pt-10 z-40' style={{maxHeight: '550px', paddingBottom:'25px'}}>
                     <button className='absolute top-3 right-3 text-gray-600 hover:text-gray-400 transition duration-200' onClick={()=>{closeOptions()}}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
