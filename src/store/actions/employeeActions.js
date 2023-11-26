@@ -54,7 +54,7 @@ export const signupEmployee = (designationPayload) => async (dispatch) => {
     }
 }
 
-export const fetchEmployees = (pagination, filters, sort, action) => async dispatch => {    
+export const fetchEmployees = (filters) => async dispatch => {    
     try{
         const headers = authHeader()
         let requestUrl = 'employees?expand=designation,department'
@@ -66,6 +66,10 @@ export const fetchEmployees = (pagination, filters, sort, action) => async dispa
             type: GETTING_EMPLOYEES,
             payload: true
         })
+
+        if(filters && filters !== '') {
+            requestUrl += `&${filters}`
+        }
 
         // let appliedFilters =''
         // if (filters && filters!==null && filters.length > 0) {
@@ -89,6 +93,13 @@ export const fetchEmployees = (pagination, filters, sort, action) => async dispa
             error
         })
     }
+}
+
+export const clearInvitedEmployee = () => async dispatch => {
+    dispatch({
+        type: INVITE_EMPLOYEE,
+        payload: null
+    })
 }
 
 // export const getWalletDetails = (walletId) => async dispatch => {    

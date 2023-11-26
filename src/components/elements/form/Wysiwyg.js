@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import UndoIcon from '../../../assets/img/icons/undo.svg'
 import RedoIcon from '../../../assets/img/icons/redo.svg'
 
-const Wysiwyg = ({fieldTitle, initialValue, updateValue}) => {
+const Wysiwyg = ({fieldTitle, initialValue, updateValue, hasError}) => {
     const [value, setValue] = useState(initialValue);
     const [reactQuillRef, setReactQuillRef] = useState('')
     const modules = {

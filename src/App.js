@@ -33,6 +33,7 @@ import LeaveApplications from './pages/user/holiday-management/leaves/LeaveAppli
 import Leaves from './pages/user/holiday-management/leaves/Leaves';
 import NewLeaveApplication from './pages/user/holiday-management/leaves/NewLeaveApplication';
 import LeaveApplication from './pages/user/holiday-management/leaves/LeaveApplication';
+import EditArticle from './pages/user/news/EditArticle';
 
 function App() {
   return (
@@ -44,7 +45,7 @@ function App() {
         
         <Routes>
           <Route path="/" exact element={<Login />} />
-          <Route path="/signup/:inviteCode" exact element={<Signup />} />
+          <Route path="/signup/:invitationCode" exact element={<Signup />} />
           <Route path="/password-reset" exact element={<RequestPasswordReset />} />
           <Route path="/password-reset/:resetCode" exact element={<ResetPassword />} />
           <Route path="/user" element={<User />}>
@@ -69,7 +70,8 @@ function App() {
             <Route path="/user/documents/new-document" element={<NewDocument />} />
             
             <Route path="/user/news" element={<News />} />
-            <Route path="/user/news/article" element={<NewsArticle />} />
+            <Route path="/user/news/article/read/:articleId" element={<NewsArticle />} />
+            <Route path="/user/news/article/edit/:articleId" element={<EditArticle />} />
             <Route path="/user/news/new-article" element={<NewArticle />} />
             
             <Route path="/user/employees" element={<Employees />} />

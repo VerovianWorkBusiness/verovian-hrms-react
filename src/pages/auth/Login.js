@@ -49,6 +49,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/sessions`, requestPayload)
+            await fetchUserProfile(response.data.data.accessToken)
             localStorage.setItem("accessToken", JSON.stringify(response.data.data.accessToken));
             navigate('user')
             // if(queryValues.returnUrl && queryValues.returnUrl !== '') {
@@ -66,10 +67,28 @@ const Login = () => {
             setProcessing(false)
         }
     }
+
+    const fetchUserProfile = async (token) => {    
+        try{
+          const headers = {
+            Authorization: `Bearer ${token}`
+          }
+          let requestUrl = `user/profile`
+
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
+          localStorage.setItem("user", JSON.stringify(response.data.data));
+        }
+        catch(error){
+          dispatch( {
+              type: ERROR,
+              error
+          })
+        }
+      }
     
     return (
         <div className="w-full flex items-center justify-center h-screen">
-            <div className="w-4/12 p-10 rounded border">
+            <div className="w-10/12 xl:w-8/12 2xl:w-4/12 p-10 rounded border">
                 <Link to="/">
                     <span className="flex items-center gap-x-2">
                         <img src={Logo} alt="logo" /><p className="tracking-[0.2em] font-medium mt-[10px]">HRMS</p>

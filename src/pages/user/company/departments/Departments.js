@@ -10,10 +10,14 @@ import Preloader from '../../../../components/elements/Preloader';
 import EmptyState from '../../../../components/elements/icons/EmptyState';
 import TrashIcon from '../../../../components/elements/icons/TrashIcon';
 import { SET_SUCCESS_MESSAGE } from '../../../../store/types';
+import ArrowIcon from '../../../../components/elements/icons/ArrowIcon';
+import { Link } from 'react-router-dom';
+import { userDetails } from '../../../../utils';
 
 const Departments = () => {
     const dispatch = useDispatch()
     const departmentsState = useSelector(state => state.departments)
+    const accountPermissions = userDetails().accountPermissions
     
     const [creatingDepartment, setCreatingDepartment] = useState(false);
     useEffect(() => {
@@ -56,13 +60,15 @@ const Departments = () => {
                             {departmentsState?.departments.map((dept, deptIndex) => ( 
                                 <div key={deptIndex} className='w-full p-10 bg-white bg-opacity-50 relative'>
 
-                                    <button className='transition duration-200 hover:text-gray-700 p-1 text-gray-400 rounded absolute top-3 right-4'>
+                                    {(accountPermissions?.includes('*') || accountPermissions?.includes('departments.*') || accountPermissions?.includes('departments.delete')) && <button className='transition duration-200 hover:text-gray-700 p-1 text-gray-400 rounded absolute top-3 right-4'>
                                         <TrashIcon className={`w-5 h-5`} />
-                                    </button>
+                                    </button>}
                                     <h3 className='text-lg text-black'>{dept.name}</h3>
                                     <p className='mb-5 mt-2 text-sm'>Headed by: {dept.headedBy ? dept.headedBy : <span className='h-[15px] w-[100px] bg-gray-200 animate-pulse inline-block ml-2'></span>}</p>
                                     <p className="text-sm text-gray-500 mb-5">{dept.description}</p>
                                     <p className="text-sm">{dept.personnel || 0} personnel</p>
+
+                                    <Link className='text-sm text-gray-600 flex items-center gap-x-2 hover:text-verovian-purple duration-200 transition mt-3' to={`details/${dept._id}`}>See department details <ArrowIcon className={`w-4 h-4 -rotate-90`}/></Link>
                                 </div>
                             ))}
                         </div> 

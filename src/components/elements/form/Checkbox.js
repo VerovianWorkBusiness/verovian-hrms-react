@@ -1,6 +1,6 @@
 import React from 'react'
 import CheckIcon from '../icons/CheckIcon'
-const Checkbox = ({CheckboxLabel, checkboxToggleFunction, isChecked, hasError}) => {
+const Checkbox = ({checkboxLabel, checkboxToggleFunction, isChecked, hasError}) => {
   return (
     <div className='w-full flex items-center gap-x-4'>
         <button 
@@ -12,8 +12,8 @@ const Checkbox = ({CheckboxLabel, checkboxToggleFunction, isChecked, hasError}) 
         >
             {isChecked && <CheckIcon />}
         </button>
-        <label className={`${hasError ? 'text-red-600' : 'text-black dark:text-gray-400'}`}>
-          {CheckboxLabel}
+        <label className={`${hasError ? 'text-red-600' : 'text-black dark:text-gray-400'} text-sm`}>
+          {checkboxLabel}
         </label>
     </div>
   )

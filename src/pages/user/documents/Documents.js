@@ -37,8 +37,8 @@ const Documents = () => {
               </div>
 
               <div className='grid grid-cols-3 gap-6'>
-                {documentsSelector.documents?.map((document, documentIndex)=>(<Link to={`details/${document._id}`}>
-                  <div key={documentIndex} className='w-full p-5 flex items-start gap-x-3 border bg-white border-transparent hover:border-gray-200 transition duration-200 cursor-pointer'>
+                {documentsSelector.documents?.map((document, documentIndex)=>(<Link key={documentIndex} to={`details/${document._id}`}>
+                  <div className='w-full p-5 flex items-start gap-x-3 border bg-white border-transparent hover:border-gray-200 transition duration-200 cursor-pointer'>
                     <div className='w-[100px] h-inherit pt-1'>
                       <img src={DocumentSvgIcon} alt="" />
                     </div>

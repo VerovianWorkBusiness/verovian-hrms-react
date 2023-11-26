@@ -40,50 +40,50 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
   const UploaderChildren = () =>{
     return (
         <div className='rounded-md text-center'>
-            <UploadIcon className={`w-6 h-6 text-gray-200 mx-auto`} />
+            <UploadIcon className={`w-6 h-6 text-gray-400 mx-auto`} />
             <p className='text-xs text-gray-500 mb-3 mt-3'>Click or drop file here to {uploadedFile || preAddedFile ? 'change' : 'upload' }</p>
-            <p className='text-xs text-gray-500'>Allowed formats: {allowedFormats.join(', ')}</p>
+            <p className='text-xs text-gray-400'>Allowed formats: {allowedFormats.join(', ')}</p>
         </div>
       )
   }
   return (
     <div className='relative'>
-      <div className={`${hasError && hasError===true ? 'border-red-400' : 'border-black'} my-10 rounded block border bg-transparent items-center relative w-full p-2`}>
-          <label 
-            className={`text-sm lg:text-md cursor-text bg-white relative px-3 py-1 transition duration-200`}>
-                {fieldLabel}
-          </label>
+      <label 
+        className={`text-sm lg:text-md cursor-text bg-transparent relative transition duration-200`}>
+            {fieldLabel}
+      </label>
+      <div className={`${hasError && hasError===true ? 'border-red-400' : 'border-gray-400'}  border-dashed my-4 rounded block border bg-transparent items-center relative w-full p-5`}>
 
           <FileUploader
-                multiple={false}
-                handleChange={handleFile}
-                name="file"
-                types={allowedFormats}
-                label='Click to upload or drop a file here'
-                hoverTitle=""
-                onTypeError={(error)=>{
-                  dispatch({
-                      type: ERROR,
-                      error: {response: {data: {
-                          message: error
-                      }}}
-                  })
-                }}
-                maxSize={4}
-                onSizeError={(error)=>{
-                  dispatch({
-                    type: ERROR,
-                    error: {response: {data: {
-                        message: error
-                    }}}
-                })
-                }}
-                classes="border-gray-200 block w-full flex items-center justify-center"
-                // className={`block w-full`}
-                // children={}
-            >
-              <UploaderChildren />
-            </FileUploader>
+            multiple={false}
+            handleChange={handleFile}
+            name="file"
+            types={allowedFormats}
+            label='Click to upload or drop a file here'
+            hoverTitle=""
+            onTypeError={(error)=>{
+              dispatch({
+                  type: ERROR,
+                  error: {response: {data: {
+                      message: error
+                  }}}
+              })
+            }}
+            maxSize={4}
+            onSizeError={(error)=>{
+              dispatch({
+                type: ERROR,
+                error: {response: {data: {
+                    message: error
+                }}}
+            })
+            }}
+            classes="border-gray-200 block w-full flex items-center justify-center"
+            // className={`block w-full`}
+            // children={}
+          >
+            <UploaderChildren />
+          </FileUploader>
 
 {/* {preAddedFileName} */}
 

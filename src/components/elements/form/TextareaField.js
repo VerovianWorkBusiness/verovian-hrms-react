@@ -20,12 +20,12 @@ const TextareaField = ({inputLabel, inputPlaceholder, fieldId, hasError, returnF
 
             <textarea 
                 id={fieldId} 
-                className={`mt-2 rounded outline-none bg-transparent min-h-[200px] h-inherit w-full cursor-text border p-4 relative z-0 border-gray-400  placeholder:text-gray-400 placeholder:text-sm focus:border-black  ${hasError && 'border-red-600 dark:border-red-400'}`} 
+                className={`mt-2 rounded outline-none text-sm bg-transparent min-h-[200px] h-inherit w-full cursor-text border p-4 relative z-0 border-gray-400  placeholder:text-gray-400 placeholder:text-sm focus:border-black  ${hasError && 'border-red-600 dark:border-red-400'}`} 
                 onChange={(e)=>{setValue(e.target.value)}}
                 value={fieldValue}
                 placeholder={inputPlaceholder || ''}
                 disabled={disabled}
-                />
+            />
         </div>
     )
 }

@@ -8,6 +8,7 @@ import shiftReducer from "./shiftReducer";
 import employeeReducer from "./employeeReducer";
 import holidayReducer from "./holidayReducer";
 import documentReducer from "./documentReducer";
+import newsReducer from "./newsReducer";
 
 const rootReducer = combineReducers({
     // Add reducers here
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     designations: designationReducer,
     employees: employeeReducer,
     holidays: holidayReducer,
-    documents: documentReducer
+    documents: documentReducer,
+    news: newsReducer
 });
 
 export default rootReducer;

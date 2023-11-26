@@ -32,9 +32,6 @@ export const fetchDocuments = (pagination, filters, sort, action) => async dispa
     try{
         const headers = authHeader()
         let requestUrl = 'documents'
-        // if(userPermissions().includes('wallets.list.self') && !userPermissions().includes('wallets.*')) {
-        //     requestUrl = 'wallets/self'
-        // }
 
         dispatch( {
             type: GETTING_DOCUMENTS,

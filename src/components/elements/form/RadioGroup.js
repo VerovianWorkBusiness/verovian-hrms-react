@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 
-const RadioGroup = ({items, inputLabel, returnSelected, hasError, inline}) => {
+const RadioGroup = ({items, inputLabel, returnSelected, hasError, inline, preSelected, disabled}) => {
 
-    const [selectedOption, setSelectedOption] = useState(null)
+    const [selectedOption, setSelectedOption] = useState(items.indexOf(preSelected) || null)
 
     const selectOption = (index, item) => {
+        if(disabled) {
+            return
+        }
         setSelectedOption(index)
         returnSelected(item)
     }

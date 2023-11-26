@@ -6,14 +6,17 @@ import FileUpload from '../../../components/elements/form/FileUpload';
 import Wysiwyg from '../../../components/elements/form/Wysiwyg';
 import FormButton from '../../../components/elements/form/FormButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCreatedArticle, createNewsArticle } from '../../../store/actions/newsActions';
+import { clearCreatedArticle, updateNewsArticle } from '../../../store/actions/newsActions';
 import { ERROR, SET_SUCCESS_MESSAGE } from '../../../store/types';
 import TrashIcon from '../../../components/elements/icons/TrashIcon';
 import { Switch } from '@headlessui/react';
 import { authHeader } from '../../../utils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Preloader from '../../../components/elements/Preloader';
+import axios from 'axios';
+import CloseIcon from '../../../components/elements/icons/CloseIcon';
 
-const NewArticle = () => {
+const EditArticle = () => {
   const newsSelector = useSelector(state => state.news)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -25,33 +28,53 @@ const NewArticle = () => {
     name: '',
     designation: ''
   }
-  const articleSchema = {
-    title: '',
-    excerpt: '',
-    authors: [
-      authorSchema
-    ],
-    coverImageUrl: '',
-    body: '',
-    published: false
-  }
+//   const articleSchema = {
+//     title: '',
+//     excerpt: '',
+//     authors: [
+//       authorSchema
+//     ],
+//     coverImageUrl: '',
+//     body: '',
+//     published: false
+//   }
 
-  const [articlePayload, setArticlePayload] = useState(articleSchema);
+  const [articlePayload, setArticlePayload] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
+  const [loading, setLoading] = useState(true);
+  const {articleId} = useParams()
 
   useEffect(() => {
     if(newsSelector.createdNewsArticle !== null) {
       dispatch({
         type: SET_SUCCESS_MESSAGE,
-        payload: "news article created successfully!"
+        payload: "news article updated successfully!"
       })
       dispatch(clearCreatedArticle())
-      navigate('./user/news')
     }
+
+    const fetchNewsArticle = async () => {    
+        try{
+          const headers = authHeader()
+          let requestUrl = `news/articles/${articleId}`
+          setLoading(true)
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
+  
+          setArticlePayload(response.data.data)
+          setLoading(false)
+        }
+        catch(error){
+          dispatch( {
+              type: ERROR,
+              error
+          })
+        }
+    }
+    fetchNewsArticle()
     return () => {
       
     };
-  }, [newsSelector.createdNewsArticle, dispatch, navigate]);
+  }, [newsSelector.createdNewsArticle, dispatch, navigate, articleId]);
 
   const validateForm = () => {
     let errors = {}
@@ -100,7 +123,7 @@ const NewArticle = () => {
     setArticlePayload(temp)
   }
 
-  const triggerCreateArticle = async () => {
+  const triggerUpdateArticle = async () => {
     if (Object.values(validateForm()).includes(true)) {
       dispatch({
           type: ERROR,
@@ -111,12 +134,17 @@ const NewArticle = () => {
       return
     }
     console.log('article payload: ', articlePayload)
-    const uploadResponse = await handleUpload()
-    // return
-    if(uploadResponse.success) {
-      setUploading(false)
-      dispatch(createNewsArticle({...articlePayload, ...{coverImageUrl: uploadResponse.data.file}}))
+    let uploadResponse = null
+    let payload = articlePayload
+    if(file !== null) {
+        uploadResponse = await handleUpload()
+        if(uploadResponse.success) {
+            payload = {...articlePayload, ...{coverImageUrl: uploadResponse.data.file}}
+        }
+        setUploading(false)
     }
+    // return
+      dispatch(updateNewsArticle(articleId, payload))
   }
 
   const [file, setFile] = useState(null);
@@ -148,9 +176,11 @@ const NewArticle = () => {
     }
 }
 
+const [changingCover, setChangingCover] = useState(false);
 
-  return (
+return (
     <UserLayout pageTitle={`Create news article`}>
+    {loading ? <Preloader preloadingText={`Loading article`} /> :
       <div className='w-10/12 xl:w-8/12 2xl:w-7/12 mx-auto mt-12'>
         
         <div className='my-4 w-full'>
@@ -158,7 +188,7 @@ const NewArticle = () => {
             inputLabel="Article Title" 
             fieldId="article-title" 
             inputType="text" 
-            preloadValue={''}
+            preloadValue={articlePayload.title || ''}
             hasError={validationErrors.title} 
             returnFieldValue={(value)=>{setArticlePayload({...articlePayload, ...{title: value}})}}
           />
@@ -169,7 +199,7 @@ const NewArticle = () => {
             inputLabel="Excerpt (Max 250 chars)" 
             fieldId="article-excerpt" 
             inputType="text" 
-            preloadValue={''}
+            preloadValue={articlePayload.excerpt || ''}
             hasError={validationErrors.excerpt || articlePayload.excerpt.length > 250} 
             returnFieldValue={(value)=>{setArticlePayload({...articlePayload, ...{excerpt: value}})}}
           />
@@ -178,16 +208,37 @@ const NewArticle = () => {
         </div>
 
         <div className='my-4 w-full'>
-          <FileUpload
-            hasError={false}
-            fieldLabel="Cover Image"
-            returnFileDetails={(details)=>{
-              // acceptFile(details)
-              setFile(details)
-            }}
-            acceptedFormats={['jpg', 'png']}
-            // triggerNotification={(value)=>{triggerNotification(value)}}
-          />
+            {!changingCover ? <div style={{
+                width: '100%',
+                height: '400px',
+                backgroundImage: `url(${(articlePayload.coverImageUrl)}`,
+                backgroundPosition: 'center center',
+                backgroundSize: 'cover',
+                position: 'relative',
+                marginBottom: '20px'
+            }}>
+                <div className='w-full h-[400px] bg-white bg-opacity-20 flex items-center justify-center'>
+                    <button onClick={()=>{setChangingCover(true)}} className=' bg-white bg-opacity-50 text-white p-3 rounded-md border border-white text-xs font-medium hover:text-black transition duration-200'>Change Cover Image</button>
+                </div>
+            </div>
+            :
+            <div className='relative'>
+                <button onClick={()=>{setChangingCover(false)}} className='absolute right-0 top-3 flex items-center gap-x-2 text-red-600 hover:text-reg-800 duration-200 transition text-xs'>
+                  <CloseIcon className={`w-5 h-5`} />
+                  Cancel
+                </button>
+                <FileUpload
+                    hasError={false}
+                    fieldLabel="Cover Image"
+                    returnFileDetails={(details)=>{
+                    // acceptFile(details)
+                    setFile(details)
+                    }}
+                    acceptedFormats={['jpg', 'png']}
+                    // triggerNotification={(value)=>{triggerNotification(value)}}
+                />
+            </div>
+            }
         </div>
 
         
@@ -220,7 +271,7 @@ const NewArticle = () => {
                     inputLabel="Author designation" 
                     fieldId={`author-designation-${authorIndex}`} 
                     inputType="text" 
-                    preloadValue={''}
+                    preloadValue={author.designation || ''}
                     hasError={false} 
                     returnFieldValue={(value)=>{updateAuthor(authorIndex, 'designation', value)}}
                   />
@@ -240,7 +291,7 @@ const NewArticle = () => {
           <div className='borderless px-6 long-text'>
               <Wysiwyg 
                 fieldTitle=""
-                initialValue={''}
+                initialValue={articlePayload.body || ''}
                 updateValue={(value)=>{setArticlePayload({...articlePayload, ...{body: value}})}}
                 hasError={validationErrors.body}
               />
@@ -275,16 +326,17 @@ const NewArticle = () => {
         <div className='my-8 flex flex-row-reverse items-center justify-between'>
             <div className='w-3/12'>
             <FormButton 
-              buttonLabel={`Create article`} 
-              buttonAction={()=>{triggerCreateArticle()}} 
+              buttonLabel={`Update article`} 
+              buttonAction={()=>{triggerUpdateArticle()}} 
               processing={uploading || newsSelector.creatingNewsArticle} />
             </div>
         </div>
 
 
       </div>
+    }
     </UserLayout>
   )
 }
 
-export default NewArticle
+export default EditArticle

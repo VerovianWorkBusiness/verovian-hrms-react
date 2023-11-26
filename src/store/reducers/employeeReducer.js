@@ -58,6 +58,7 @@ export default function(state = initialState, action){
             ...state,
             loadingEmployees:false,
             employees: null,
+            invitingEmployee: false,
             employeesError: action.payload 
         }
         default: return state

@@ -4,11 +4,10 @@ import TwoWayChevronIcon from '../icons/TwoWayChevronIcon';
 import { UseOutsideClickCloser } from '../UseOutsideClickCloser';
 
 const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, displayImage, imageField, titleField, hasError, returnFieldValue, preSelected, preSelectedLabel}) => {
-    const [activeValue, setActiveValue] = useState(preSelected)
+    const [activeValue, setActiveValue] = useState(preSelected || selectOptions[0]?.label || '')
     const [visibleOptions] = useState(selectOptions)
     const [optionsOpen, setOptionsOpen] = useState(false)
 
-    const [ isFocused, setIsFocused ] = useState(false)
 
     
     useEffect(() => {
@@ -28,18 +27,6 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
     }, [preSelected, preSelectedLabel, selectOptions, titleField])
     
 
-    const focusField = () => {
-        setIsFocused(true)
-        setOptionsOpen(true)
-        // document.getElementById(fieldId).focus()
-    }
-
-    const unfocusField = () => {
-        setIsFocused(false)
-        closeOptions()
-        // document.getElementById(fieldId).focus()
-    }
-
     const openOptions = () => {
         if(disabled && disabled === true) {
             return
@@ -48,7 +35,6 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
     }
 
     const closeOptions = () => {
-        console.log('closed...')
         setOptionsOpen(false)
     }
 

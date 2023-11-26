@@ -9,18 +9,42 @@ import PresentationIcon from '../elements/icons/PresentationIcon'
 import UsersIcon from '../elements/icons/UsersIcon'
 import QueueListIcon from '../elements/icons/QueueListIcon'
 import GlobeIcon from '../elements/icons/GlobeIcon'
-import ClipboardIcon from '../elements/icons/ClipboardIcon'
+// import ClipboardIcon from '../elements/icons/ClipboardIcon'
 import ProfileImage from '../../assets/img/avatar.webp'
 import SearchIcon from '../elements/icons/SearchIcon'
 import BellIcon from '../elements/icons/BellIcon'
 import OfficeIcon from '../elements/icons/OfficeIcon'
 
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import LogoutIcon from '../elements/icons/LogoutIcon'
+import { authHeader, userDetails } from '../../utils'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { ERROR } from '../../store/types'
 
 const UserLayout = ({pageTitle, children}) => {
-  // const router = useRouter();
+  const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch()
   const currentRoute = location.pathname;
+
+  const signOut = async (token) => {    
+    try{
+      const headers = authHeader()
+      let requestUrl = `auth/sessions`
+
+      await axios.delete(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      navigate('/')
+    }
+    catch(error){
+      dispatch( {
+          type: ERROR,
+          error
+      })
+    }
+  }
   return (
     <div className='w-full'>
         <div className='w-full flex items-start relative'>
@@ -108,7 +132,13 @@ const UserLayout = ({pageTitle, children}) => {
                       alt='' 
                     /> */}
                   </div>
-                  <p className='text-sm font-medium text-verovian-purple'>Anita Jotunheim</p>
+                  <div>
+                    <p className='text-sm font-medium text-verovian-purple'>{userDetails().firstName} {userDetails().lastName}</p>
+                    <button onClick={()=>{signOut()}} className='flex items-center gap-x-2 text-left text-gray-500 hover:text-verovian-purple transition duration-200 text-xs'>
+                      <LogoutIcon className={`h-5 w-5`} />
+                      Sign out
+                    </button>
+                  </div>
               </div>
 
             </div>
