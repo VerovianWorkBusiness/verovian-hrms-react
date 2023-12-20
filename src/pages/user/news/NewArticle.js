@@ -47,7 +47,7 @@ const NewArticle = () => {
         payload:{successMessage: "news article created successfully!"}
       })
       dispatch(clearCreatedArticle())
-      navigate('../user/news')
+      navigate('/user/news')
     }
     return () => {
       
