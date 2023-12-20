@@ -3,9 +3,9 @@ import UserLayout from '../../../../components/layout/UserLayout'
 import CompanyPageLayout from '../../../../components/layout/CompanyPageLayout'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { authHeader, tableHeadersFields } from '../../../../utils';
+import { authHeader, tableHeadersFields, transactionTimeStamp } from '../../../../utils';
 import axios from 'axios';
-import { ERROR, SET_SUCCESS_MESSAGE } from '../../../../store/types';
+import { ERROR } from '../../../../store/types';
 import { fetchEmployees } from '../../../../store/actions/employeeActions';
 import Status from '../../../../components/elements/Status';
 import EmployeeSnippet from '../../../../components/partials/employees/EmployeeSnippet';
@@ -23,7 +23,6 @@ const DepartmentDetails = () => {
   const dispatch = useDispatch()
   const {departmentId} = useParams()
   const employeesState = useSelector(state => state.employees)
-  const departmentState = useSelector(state => state.department)
 
   useEffect(() => {
     const fetchDepartmentDetails = async () => {    
@@ -82,7 +81,7 @@ const DepartmentDetails = () => {
               id: item.employeeId || '',
               employee: <EmployeeSnippet showIcon={true} name={`${item.firstName} ${item.lastName}`} phone={item.phone} email={item.email} />,
               designation: item.designation.name,
-              dateJoined: item.dateJoined,
+              dateJoined: item?.userProfile ? transactionTimeStamp(item?.userProfile?.createdAt).date : '',
               systemStatus: <Status status={item.userProfile ? 'profiled' : 'not-profiled'} />, //<OrderPaymentStatus status={item.paymentStatus} />,
           },
       )
