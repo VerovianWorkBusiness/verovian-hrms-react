@@ -236,7 +236,7 @@ return (
                     // acceptFile(details)
                     setFile(details)
                     }}
-                    acceptedFormats={['jpg', 'png']}
+                    acceptedFormats={['jpeg', 'jpg', 'png']}
                     // triggerNotification={(value)=>{triggerNotification(value)}}
                 />
             </div>

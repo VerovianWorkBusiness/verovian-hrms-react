@@ -180,13 +180,11 @@ const NewArticle = () => {
         <div className='my-4 w-full'>
           <FileUpload
             hasError={false}
-            fieldLabel="Cover Image"
+            fieldLabel={`Cover Image`}
             returnFileDetails={(details)=>{
-              // acceptFile(details)
               setFile(details)
             }}
-            acceptedFormats={['jpg', 'png']}
-            // triggerNotification={(value)=>{triggerNotification(value)}}
+            acceptedFormats={['jpeg', 'jpg', 'png']}
           />
         </div>
 

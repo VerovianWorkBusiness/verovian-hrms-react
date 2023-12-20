@@ -62,6 +62,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
             label='Click to upload or drop a file here'
             hoverTitle=""
             onTypeError={(error)=>{
+              console.log('type error happening...')
               dispatch({
                   type: ERROR,
                   error: {response: {data: {
