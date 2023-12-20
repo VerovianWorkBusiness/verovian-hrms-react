@@ -33,7 +33,8 @@ const NewArticle = () => {
     ],
     coverImageUrl: '',
     body: '',
-    published: false
+    published: false,
+    featured: false
   }
 
   const [articlePayload, setArticlePayload] = useState(articleSchema);
@@ -43,10 +44,10 @@ const NewArticle = () => {
     if(newsSelector.createdNewsArticle !== null) {
       dispatch({
         type: SET_SUCCESS_MESSAGE,
-        payload: "news article created successfully!"
+        payload:{successMessage: "news article created successfully!"}
       })
       dispatch(clearCreatedArticle())
-      navigate('./user/news')
+      navigate('../user/news')
     }
     return () => {
       
@@ -264,6 +265,30 @@ const NewArticle = () => {
                     <span
                         className={`transform transition ease-in-out duration-200 ${
                           articlePayload.published ? 'translate-x-6' : 'translate-x-1'
+                        } inline-block w-3 h-3 transform bg-white rounded-full`}
+                    />
+                </Switch>
+            </div>
+        </div>
+        <div className='w-full my-4 flex gap-x-4 items-center justify-between'>
+            <div  className='w-full'>
+                <p className="text-sm text-gray-600">
+                   Set as featured
+                </p>
+                <p className='text-xs text-gray-400'>Setting this article as a featured article gives it priority over others and keeps it above other posts</p>
+            </div>
+            <div className='w-24'>
+                <Switch
+                    checked={articlePayload.featured}
+                    onChange={()=>{setArticlePayload({...articlePayload, ...{featured: !articlePayload.featured}})}}
+                    className={`${
+                      articlePayload.featured ? 'bg-verovian-purple' : 'bg-gray-200'
+                    } relative inline-flex items-center h-5 rounded-full w-10`}
+                    >
+                    {/* <span className="sr-only">Display stock levels</span> */}
+                    <span
+                        className={`transform transition ease-in-out duration-200 ${
+                          articlePayload.featured ? 'translate-x-6' : 'translate-x-1'
                         } inline-block w-3 h-3 transform bg-white rounded-full`}
                     />
                 </Switch>
