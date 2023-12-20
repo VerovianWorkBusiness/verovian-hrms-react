@@ -12,9 +12,13 @@ import TrashIcon from '../../../components/elements/icons/TrashIcon';
 import { Switch } from '@headlessui/react';
 import { authHeader } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
+import SelectField from '../../../components/elements/form/SelectField';
+import { fetchDepartments } from '../../../store/actions/departmentActions';
+import Preloader from '../../../components/elements/Preloader';
 
 const NewArticle = () => {
   const newsSelector = useSelector(state => state.news)
+  const departmentsState = useSelector(state => state.departments)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // const mediaSchema = {
@@ -49,6 +53,7 @@ const NewArticle = () => {
       dispatch(clearCreatedArticle())
       navigate('/user/news')
     }
+    dispatch(fetchDepartments())
     return () => {
       
     };
@@ -231,6 +236,26 @@ const NewArticle = () => {
 
           <button onClick={()=>{addAuthor()}} className='w-max p-3 text-sm bg-black text-white rounded'>Add another author</button>
         </div>
+
+        {departmentsState.fetchingDepartments ? 
+          <Preloader preloadingText={`fetching departments...`} />
+          :
+          <div className='my-4 w-full'>
+              <SelectField
+                selectOptions={departmentsState.departments}
+                inputLabel="Select Department"
+                titleField="name"
+                displayImage={false}
+                imageField=""
+                preSelected=''
+                fieldId="employee-department"
+                hasError={false}
+                // return id of accounts of the selected option
+                returnFieldValue={(value) => {setArticlePayload({...articlePayload, ...{department: value._id}})}}
+              />
+            <p className='text-xs mt-2 text-gray-400'>Select a department above to assign post. If left blank, article will be visible to all users</p>
+          </div>
+        }
 
         <h3 className='font-medium mt-12'>Article body</h3>
         <p className='text-sm mb-3'>Please create your article in the field below</p>
