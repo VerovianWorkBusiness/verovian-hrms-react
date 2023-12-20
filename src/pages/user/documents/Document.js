@@ -94,7 +94,7 @@ const Document = () => {
       },
       {
         value: '[[middleName]]',
-        description: 'opy and paste this to insert employee middle name'
+        description: 'Copy and paste this to insert employee middle name'
       },
       {
         value: '[[lastName]]',
@@ -114,6 +114,10 @@ const Document = () => {
       },
       {
         value: '[[startDate]]',
+        description: 'Copy and paste this to insert employee start date'
+      },
+      {
+        value: '[[address]]',
         description: 'Copy and paste this to insert employee start date'
       },
     ]

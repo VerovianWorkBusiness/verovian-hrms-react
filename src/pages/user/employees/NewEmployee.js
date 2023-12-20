@@ -48,6 +48,11 @@ const NewEmployee = () => {
     department: "",
     designation: "",
     gender: "",
+    address: {
+      address: "",
+      city: "",
+      state: ""
+    },
     requiredDocumentUploads: [requiredDocumentUploadSchema],
     requiredDocumentSignings: [""]
 
@@ -524,6 +529,10 @@ const NewEmployee = () => {
             returnFieldValue={(value)=>{setEmployeePayload({...employeePayload, ...{lastName: value}})}}
           />
         </div>
+
+        <h3 className='font-medium mt-12'>Contact details</h3>
+        <p className='text-sm mb-3'>How can this employee be reached
+        </p>
         <div className='my-4 w-full'>
           <TextField
             inputLabel="Employee email address" 
@@ -544,6 +553,58 @@ const NewEmployee = () => {
             returnFieldValue={(value)=>{setEmployeePayload({...employeePayload, ...{phone: value}})}}
           />
         </div>
+        <div className='my-4 w-full'>
+          <TextField
+            inputLabel="Address" 
+            fieldId="employee-address" 
+            inputType="text" 
+            preloadValue={''}
+            hasError={validationErrors.address} 
+            returnFieldValue={(value)=>{setEmployeePayload({
+              ...employeePayload, 
+              ...{
+                ...employeePayload.address, 
+                ...{address: value}
+              }
+            })}}
+          />
+        </div>
+        <div className='my-4 w-full'>
+          <TextField
+            inputLabel="City" 
+            fieldId="employee-address-city" 
+            inputType="text" 
+            preloadValue={''}
+            hasError={validationErrors.city} 
+            returnFieldValue={(value)=>{setEmployeePayload({
+              ...employeePayload, 
+              ...{
+                ...employeePayload.address, 
+                ...{city: value}
+              }
+            })}}
+          />
+        </div>
+        <div className='my-4 w-full'>
+          <TextField
+            inputLabel="State" 
+            fieldId="employee-address-state" 
+            inputType="text" 
+            preloadValue={''}
+            hasError={validationErrors.state} 
+            returnFieldValue={(value)=>{setEmployeePayload({
+              ...employeePayload, 
+              ...{
+                ...employeePayload.address, 
+                ...{state: value}
+              }
+            })}}
+          />
+        </div>
+
+        <h3 className='font-medium mt-12'>Company placement</h3>
+        <p className='text-sm mb-3'>Please designate employees placement in the company
+        </p>
 
         {departmentsState.fetchingDepartments ? 
           <Preloader preloadingText={`fetching departments...`} />

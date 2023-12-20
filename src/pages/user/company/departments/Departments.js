@@ -25,7 +25,9 @@ const Departments = () => {
         if(departmentsState.createdDepartment && departmentsState.createdDepartment !== null) {
             dispatch({
                 type: SET_SUCCESS_MESSAGE,
-                payload: 'Department created successfully!'
+                payload: {
+                    successMessage: `Department created!`
+                  }
             })
             dispatch(fetchDepartments())
             setCreatingDepartment(false)
@@ -34,6 +36,12 @@ const Departments = () => {
             
         };
     }, [dispatch, departmentsState.createdDepartment]);
+
+    const deleteDepartment = () => {
+        if(window.confirm('Are you sure you want to delete this department?')) {
+            dispatch()
+        }
+    }
 
   return (
     <>
@@ -60,7 +68,7 @@ const Departments = () => {
                             {departmentsState?.departments.map((dept, deptIndex) => ( 
                                 <div key={deptIndex} className='w-full p-10 bg-white bg-opacity-50 relative'>
 
-                                    {(accountPermissions?.includes('*') || accountPermissions?.includes('departments.*') || accountPermissions?.includes('departments.delete')) && <button className='transition duration-200 hover:text-gray-700 p-1 text-gray-400 rounded absolute top-3 right-4'>
+                                    {(accountPermissions?.includes('*') || accountPermissions?.includes('departments.*') || accountPermissions?.includes('departments.delete')) && <button onClick={()=>{deleteDepartment()}} className='transition duration-200 hover:text-gray-700 p-1 text-gray-400 rounded absolute top-3 right-4'>
                                         <TrashIcon className={`w-5 h-5`} />
                                     </button>}
                                     <h3 className='text-lg text-black'>{dept.name}</h3>

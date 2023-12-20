@@ -23,7 +23,9 @@ const Groups = () => {
       if(groupsState.createdGroup && groupsState.createdGroup !== null) {
           dispatch({
             type: SET_SUCCESS_MESSAGE,
-            payload: 'Group created successfully!'
+            payload: {
+              successMessage: `Group created`
+            }
           })
           dispatch(fetchGroups())
           setCreatingGroup(false)

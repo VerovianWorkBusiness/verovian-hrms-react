@@ -4,7 +4,7 @@ import PlusIcon from '../../../components/elements/icons/PlusIcon'
 import { Link } from 'react-router-dom'
 import DataTable from '../../../components/elements/DataTable'
 import EmployeeSnippet from '../../../components/partials/employees/EmployeeSnippet'
-import { tableHeadersFields } from '../../../utils'
+import { tableHeadersFields, transactionTimeStamp } from '../../../utils'
 import Status from '../../../components/elements/Status'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchEmployees } from '../../../store/actions/employeeActions'
@@ -48,7 +48,7 @@ const Employees = () => {
                 employee: <EmployeeSnippet showIcon={true} name={`${item.firstName} ${item.lastName}`} phone={item.phone} email={item.email} />,
                 designation: item.designation.name,
                 department: item.department.name,
-                dateJoined: item.dateJoined,
+                dateJoined: item?.userProfile ? transactionTimeStamp(item?.userProfile?.createdAt).date : '',
                 systemStatus: <Status status={item.userProfile ? 'profiled' : 'not-profiled'} />, //<OrderPaymentStatus status={item.paymentStatus} />,
             },
         )

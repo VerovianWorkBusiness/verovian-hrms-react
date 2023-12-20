@@ -57,7 +57,7 @@ export const signupEmployee = (designationPayload) => async (dispatch) => {
 export const fetchEmployees = (filters) => async dispatch => {    
     try{
         const headers = authHeader()
-        let requestUrl = 'employees?expand=designation,department'
+        let requestUrl = 'employees?expand=designation,department,userProfile'
         // if(userPermissions().includes('wallets.list.self') && !userPermissions().includes('wallets.*')) {
         //     requestUrl = 'wallets/self'
         // }

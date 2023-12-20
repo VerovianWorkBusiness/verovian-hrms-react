@@ -25,6 +25,7 @@ export const createNewsArticle = (articlePayload) => async (dispatch) => {
         })
     }
 }
+
 export const updateNewsArticle = (articleId, articlePayload) => async (dispatch) => {    
     try{
         const headers = authHeader()
@@ -49,25 +50,29 @@ export const updateNewsArticle = (articleId, articlePayload) => async (dispatch)
     }
 }
 
-export const fetchNewsArticles = (pagination, filters, sort, action) => async dispatch => {    
+export const fetchNewsArticles = (pagination, filterString, sort, action) => async dispatch => {    
     try{
         const headers = authHeader()
-        let requestUrl = 'news/articles'
+        let requestUrl = `${process.env.REACT_APP_API_URL}/news/articles`
+
+        if(filterString && filterString !== '') {
+            requestUrl += `${requestUrl.includes('?') ? '&' : '?'}${filterString}`
+        }
+
+        if(pagination?.page && pagination?.page!=='') {
+            requestUrl += `${requestUrl.includes('?') ? '&' : '?'}page=${pagination.page}`
+        }
+
+        if(pagination?.perPage && pagination?.perPage!=='') {
+            requestUrl += `${requestUrl.includes('?') ? '&' : '?'}perPage=${pagination.perPage}`
+        }
 
         dispatch( {
             type: GETTING_NEWS_ARTICLES,
             payload: true
         })
 
-        // let appliedFilters =''
-        // if (filters && filters!==null && filters.length > 0) {
-        //     appliedFilters = parseFilters(filters, action, 'WALLETS')
-        // }
-
-
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}?expand=custodian&limit=${pagination.perPage}&page=${pagination.page}&${appliedFilters}&${applySort(sort)}`, { headers })
-
+        const response = await axios.get(requestUrl, { headers })
         dispatch( {
             type: GET_NEWS_ARTICLES,
             payload: response.data.data.articles
@@ -75,6 +80,7 @@ export const fetchNewsArticles = (pagination, filters, sort, action) => async di
         
     }
     catch(error){
+        console.log(error)
         dispatch( {
             type: NEWS_ERROR,
             // payload: error.response.data,

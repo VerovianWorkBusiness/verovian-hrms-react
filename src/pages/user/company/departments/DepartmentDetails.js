@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { authHeader, tableHeadersFields } from '../../../../utils';
 import axios from 'axios';
-import { ERROR } from '../../../../store/types';
+import { ERROR, SET_SUCCESS_MESSAGE } from '../../../../store/types';
 import { fetchEmployees } from '../../../../store/actions/employeeActions';
 import Status from '../../../../components/elements/Status';
 import EmployeeSnippet from '../../../../components/partials/employees/EmployeeSnippet';
@@ -14,6 +14,8 @@ import DataTable from '../../../../components/elements/DataTable';
 import EmptyState from '../../../../components/elements/icons/EmptyState';
 import ChevronIcon from '../../../../components/elements/icons/ChevronIcon';
 import LeavePolicyManagement from '../../../../components/partials/departments/LeavePolicyManagement';
+import ModalLayout from '../../../../components/layout/ModalLayout';
+import EditDepartment from '../../../../components/partials/departments/EditDepartment';
 
 const DepartmentDetails = () => {
   const [department, setDepartment] = useState(null);
@@ -21,6 +23,7 @@ const DepartmentDetails = () => {
   const dispatch = useDispatch()
   const {departmentId} = useParams()
   const employeesState = useSelector(state => state.employees)
+  const departmentState = useSelector(state => state.department)
 
   useEffect(() => {
     const fetchDepartmentDetails = async () => {    
@@ -42,10 +45,18 @@ const DepartmentDetails = () => {
     }
     dispatch(fetchEmployees(`department=${departmentId}`))
     fetchDepartmentDetails()
+    // if(departmentState.createdDepartment !== null){
+    //   dispatch({
+    //     type: SET_SUCCESS_MESSAGE,
+    //     payload: "Department details updated"
+    //   })
+    // }
     return () => {
       
     };
-  }, [dispatch, departmentId]);
+  }, [dispatch, departmentId, 
+    // departmentState.createdDepartment
+  ]);
 
   const employeeTableOptions = {
     selectable: false,
@@ -81,7 +92,8 @@ const DepartmentDetails = () => {
   }
 
   const [leavePoliciesActive, setLeavePoliciesActive] = useState(false);
-
+  const [editingDepartment, setEditingDepartment] = useState(false);
+  
   return (
     <UserLayout pageTitle="Company">
       <CompanyPageLayout sectionTitle="Department details">
@@ -156,6 +168,17 @@ const DepartmentDetails = () => {
             <EmptyState emptyStateText={`Department not found`} />
         }
       </CompanyPageLayout>
+
+      {department&& <ModalLayout
+          isOpen={editingDepartment} 
+          closeModal={()=>{setEditingDepartment(false)}} 
+          actionFunction={()=>{}} 
+          actionFunctionLabel='Edit department' 
+          dialogTitle={`Edit Department - ${department.name}`}
+          maxWidthClass='max-w-xl'
+      >
+          <EditDepartment department={department} />
+      </ModalLayout>}
     </UserLayout>
   )
 }

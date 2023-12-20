@@ -23,7 +23,9 @@ const Designations = () => {
       if(designationSState.createdDesignation && designationSState.createdDesignation !== null) {
           dispatch({
             type: SET_SUCCESS_MESSAGE,
-            payload: 'Designation created successfully!'
+            payload: {
+              successMessage: `Designation created`
+            }
           })
           dispatch(fetchDesignations())
           setCreatingDesignation(false)

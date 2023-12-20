@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import ArrowIcon from '../../elements/icons/ArrowIcon'
+import StarIcon from '../../elements/icons/StarIcon'
 
 const NewsArticleCard = ({article}) => {
   return (
@@ -13,7 +14,13 @@ const NewsArticleCard = ({article}) => {
             backgroundSize: 'cover',
             position: 'relative'
         }}>
-            {!article.published && <span className="absolute top-[10px] right-[10px] bg-black inline rounded p-[5px] text-white bg-opacity-30 text-xs">Draft article</span>}
+            {!article.published && <span className="absolute top-[10px] right-[10px] bg-black  rounded p-[5px] text-white bg-opacity-60 text-xs flex items-center gap-x-1">
+                Draft article
+            </span>}
+            {article.featured && <span className="absolute top-[10px] right-[10px] bg-black rounded p-[5px] text-yellow-500 bg-opacity-60 text-xs flex items-center gap-x-1">
+                <StarIcon className={`w-4 h-4`} />
+                featured article
+            </span>}
         </div>
         <div className='w-full p-6'>
             <h3 className="text-xl mb-3 font-medium text-verovian-purple">{article.title}</h3>

@@ -28,6 +28,65 @@ export const createDepartment = (departmentPayload) => async (dispatch) => {
     }
 }
 
+export const updateDepartment = (departmentId, departmentPayload) => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: CREATING_DEPARTMENT,
+            payload: true
+        })
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/departments/${departmentId}`, departmentPayload, { headers })
+        
+        dispatch({
+            type: CREATE_DEPARTMENT,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        // console.log(error)
+        dispatch({
+            type: DEPARTMENTS_ERROR,
+            // payload: error.response.data
+            error
+        })
+    }
+}
+
+export const deleteDepartment = (departmentId) => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: CREATING_DEPARTMENT,
+            payload: true
+        })
+        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/departments/${departmentId}`, { headers })
+        
+        dispatch({
+            type: CREATE_DEPARTMENT,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        // console.log(error)
+        dispatch({
+            type: DEPARTMENTS_ERROR,
+            // payload: error.response.data
+            error
+        })
+    }
+}
+
+export const clearCreatedDepartment = () => async (dispatch) => {    
+    dispatch({
+        type: CREATE_DEPARTMENT,
+        payload: null
+    })
+}
+
 export const fetchDepartments = (pagination, filters, sort, action) => async dispatch => {    
     try{
         const headers = authHeader()

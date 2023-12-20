@@ -11,7 +11,7 @@ import ArrowIcon from '../../components/elements/icons/ArrowIcon';
 import FileUpload from '../../components/elements/form/FileUpload';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { ERROR } from '../../store/types';
+import { ERROR, SET_SUCCESS_MESSAGE } from '../../store/types';
 import Preloader from '../../components/elements/Preloader';
 import Checkbox from '../../components/elements/form/Checkbox';
 import ReadDocument from '../../components/partials/documents/ReadDocument';
@@ -24,16 +24,27 @@ const Signup = () => {
 	const navigate = useNavigate();
 	const { invitationCode } = useParams()
 	const dispatch = useDispatch()
-	const [invitation, setstate] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [invitationDetails, setInvitationDetails] = useState(null);
+	const [documentSignings, setDocumentSignings] = useState([]);
 
 	useEffect(() => {
 		const getInvitation = async () => {
 			try {
-				
 				const response = await axios.get(`${process.env.REACT_APP_API_URL}/employees/invitations/${invitationCode}?expand=requiredDocumentSignings`, {  })
 				setInvitationDetails(response.data.data)
+				setDocumentSignings(response.data.data.requiredDocumentSignings.map((doc)=> {
+					return {
+						document: doc._id,
+						signed: false,
+						signature: ''
+					}
+				}))
+				setOnboardPayload({
+					firstName: response.data.data.firstName,
+					middleName: response.data.data.middleName || '',
+					lastName: response.data.data.lastName
+				})
 				setLoading(false)
 			} catch (error) {
 			  dispatch({
@@ -50,12 +61,18 @@ const Signup = () => {
 		};
 	}, [dispatch, invitationCode]);
 	
+	const [showPasswordLengthWarning, setShowPasswordLengthWarning] = useState(false);
 	const validateStep1Form = () => {
         let errors = {}
 
         if (!password || password === '') {
             errors.password = true
         }
+
+		if(password && password.length < 8) {
+			errors.password = true
+			setShowPasswordLengthWarning(true)
+		}
 
         setValidationErrors(errors)
         return errors
@@ -94,21 +111,19 @@ const Signup = () => {
 		},
 	]
 
-	const educationItem = [
-		{
-			type: '',
-			institution: '',
-			course: '',
-			startDate: '',
-			endDate: ''
-		}
-	]
+	const educationItem = {
+		type: '',
+		institution: '',
+		course: '',
+		startDate: '',
+		endDate: ''
+	}
 
 	const [education, setEducation] = useState([educationItem]);
 
 	const addEducation = () => {
 		let tempEducation = [...education]
-		tempEducation.push(education)
+		tempEducation.push(educationItem)
 		setEducation(tempEducation)
 	}
 
@@ -156,24 +171,24 @@ const Signup = () => {
 	}
 
 	const [files, setFiles] = useState([]);
-	const [uploading, setUploading] = useState(false);
 
-	const addFile = (docId, file) => {
+
+	const addFile = (doc, file) => {
 		let tempFiles = [...files]
 		tempFiles.push({
-			docId: docId,
+			document: doc,
 			file: file
 		})
+		setFiles(tempFiles)
 	}
   
 	const handleUpload = async (file) => {
 	  console.log(file)
-	  setUploading(true)   
+
 	  var formData = new FormData()
 	  formData.append('file', file.file )
-	  // dispatch(uploadTransactionReceipt(id, formdata))
 	  const headers = new Headers();
-	//   headers.append("Authorization", authHeader().Authorization);
+
 	  try {
   
 		  const doUpload = await fetch(`${process.env.REACT_APP_API_URL}/files/new`, {
@@ -191,38 +206,21 @@ const Signup = () => {
 		  });
 	  }
   	}
-	const [requiredDocs, setRequiredDocs] = useState(null);
 
 	const completeStep3 = () => {
-		if(!invitationDetails.requiredDocumentUploads || invitationDetails.requiredDocumentUploads.length === 0) {
-			setActiveStep(4)
+		if(!files || files.length === 0) {
+			// setActiveStep(4)
+			dispatch({
+				type: ERROR,
+				error: {response: {data: {
+					message: 'Please upload required documents'
+				}}}
+			});
 			return
 		}
-		if (Object.values(validateStep2Form()).includes(true)) {
-            dispatch({
-                type: ERROR,
-                error: {response: {data: {
-                    message: 'Please check the highlighted fields'
-                }}}
-            });
-            return
-        }
 		setActiveStep(4)
 	}
 
-	const [documentSignings, setDocumentSignings] = useState([]);
-
-	const updateDocumentSigning = (document, signature) => {
-		let signings = [...documentSignings]
-		const newDocSigns = {
-			acknowledged: true,
-			document: document,
-			signature: signature
-		}
-		signings.push(newDocSigns)
-		setDocumentSignings(signings)
-
-	}
 	const [activeDocument, setActiveDocument] = useState(null);
 	const [readingDocument, setReadingDocument] = useState(false);
 
@@ -233,15 +231,64 @@ const Signup = () => {
 		}, 100);
 	}
 
-	const completeOnboarding = () => {
-		const payload = {
-			password,
-			documentSignings,
-			requiredDocs
+	const [processing, setProcessing] = useState(false);
+	const completeOnboarding = async () => {
+		try {
+			// upload files
+			setProcessing(true)
+	
+			let uploadedDocuments = []
+			for (let index = 0; index < files.length; index++) {
+				const element = files[index];
+				const uploaded = await handleUpload(element.file)
+	
+				uploadedDocuments.push({
+					name: element.document.name,
+					documentSlug: element.document.slug,
+					url: uploaded.data.file
+				})
+			}
+			const payload = {
+				...onboardPayload,
+				...{
+					password: password,
+					signedDocuments: documentSignings,
+					education: education,
+					documents: uploadedDocuments
+				}
+			}
+	
+			console.log(JSON.stringify(payload))
+			// return
+			await axios.post(`${process.env.REACT_APP_API_URL}/employees/signup/${invitationCode}`, payload, {})
+			dispatch({
+				type: SET_SUCCESS_MESSAGE,
+				payload: {
+					successMessage: 'Onboarding is complete. You can now log in to the user area.'
+				}
+			})
+			navigate('/')
+			
+		} catch (error) {
+			dispatch({
+				type: ERROR,
+				error: error
+			})
+			setProcessing(false)
 		}
+	}
 
-		console.log(payload)
-		// navigate('/')
+	const docDetails = (docId) => {
+		const doc = invitationDetails.requiredDocumentSignings.find((requiredDoc) => {
+			return requiredDoc._id === docId
+		})
+		return doc
+	}
+
+	const updateDocSigning = (index, field, value) => {
+		let temp = [...documentSignings]
+		temp[index][field] = value
+		setDocumentSignings(temp)
 	}
 
 	return (
@@ -271,7 +318,7 @@ const Signup = () => {
 									fieldId="first-name" 
 									inputType="first-name" 
 									disabled={true}
-									preloadValue={invitationDetails.firstName || ''}
+									preloadValue={onboardPayload.firstName || ''}
 									hasError={validationErrors.firstName} 
 									returnFieldValue={(value)=>{setOnboardPayload({...onboardPayload, ...{firstName: value}})}}
 								/>
@@ -285,7 +332,7 @@ const Signup = () => {
 									inputType="text" 
 									hasError={validationErrors.middleName} 
 									disabled={true}
-									preloadValue={invitationDetails.middleName || ''}
+									preloadValue={onboardPayload.middleName || ''}
 									returnFieldValue={(value)=>{setOnboardPayload({...onboardPayload, ...{middleName: value}})}}
 								/>
 							</div>
@@ -298,7 +345,7 @@ const Signup = () => {
 									inputType="text" 
 									hasError={validationErrors.lastName} 
 									disabled={true}
-									preloadValue={invitationDetails.lastName || ''}
+									preloadValue={onboardPayload.lastName || ''}
 									returnFieldValue={(value)=>{setOnboardPayload({...onboardPayload, ...{lastName: value}})}}
 								/>
 							</div>
@@ -311,8 +358,8 @@ const Signup = () => {
 										{label: 'Male'},
 									]} 
 									hasError={validationErrors.gender} 
-									disabled={true}
-									preloadValue={invitationDetails.gender || ''}
+									disabled={false}
+									preloadValue={invitationDetails?.gender || ''}
 									returnSelected={(value)=>{setOnboardPayload({...onboardPayload, ...{gender: value.label}})}}
 								/>
 							</div>
@@ -327,6 +374,9 @@ const Signup = () => {
 									hasError={validationErrors.password} 
 									returnFieldValue={(value)=>{setPassword(value)}}
 								/>
+								{showPasswordLengthWarning && 
+								<p className="text-red-500 text-xs">Password should not be less than 8 characters.</p>
+								}
 							</div>
 
 							<div className='animate__animated animate__fadeIn mb-4 mt-8 w-full'>
@@ -403,16 +453,22 @@ const Signup = () => {
 
 							<button className='rounded bg-verovian-light-purple p-3 text-verovian-purple text-sm' onClick={()=>{addEducation()}}>Add Education</button>
 
-							<div className='animate__animated animate__fadeIn mb-4 mt-8 w-full'>
-								<FormButton 
-									buttonLabel={<span className='flex items-center gap-x-2 text-sm'>Continue <ArrowIcon className={`-4 h-4 transform -rotate-90`} /></span>} 
-									buttonAction={()=>{completeStep2()}} />
-								
+							<div className='animate__animated animate__fadeIn mb-4 mt-8 w-full flex items-center gap-x-4 justify-between'>
+								<div className='w-4/12'>
+									<button onClick={()=>{setActiveStep(activeStep - 1)}} className='flex items-center justify-center gap-x-3 text-gray-500 text-sm'>
+										<ArrowIcon className={`w-4 h-4 transform rotate-90`} /> Go back
+									</button>
+								</div>
+								<div className='w-8/12'>
+									<FormButton 
+										buttonLabel={<span className='flex items-center gap-x-2 text-sm'>Continue <ArrowIcon className={`-4 h-4 transform -rotate-90`} /></span>} 
+										buttonAction={()=>{completeStep2()}} />
+								</div>
 							</div>
 						</>}
 						
 						{activeStep === 3 && <>
-							<p className='text-sm text-gray-500 mt-6'><span className='text-black fon-medium'>STEP 2:</span> Documentation</p>
+							<p className='text-sm text-gray-500 mt-6'><span className='text-black fon-medium'>STEP 3:</span> Documentation</p>
 							<p className='mt-3 dark:text-gray-500 text-sm'>Please upload the following required document(s)</p>
 							
 							{invitationDetails.requiredDocumentUploads.map((doc, docIndex)=>(
@@ -421,7 +477,7 @@ const Signup = () => {
 										hasError={false}
 										fieldLabel={doc.documentName}
 										returnFileDetails={(details)=>{
-											addFile(details)
+											addFile(doc, details)
 										}}
 										acceptedFormats={['pdf', 'jpeg', 'jpg', 'png']}
 									/>
@@ -447,26 +503,27 @@ const Signup = () => {
 							<p className='text-sm text-gray-500 mt-6'><span className='text-black fon-medium'>STEP 4:</span> Acceptance</p>
 							<p className='mt-3 dark:text-gray-500 text-sm'>Please sign off the following on-boarding document(s) to complete your onboarding</p>
 							
-							{invitationDetails.requiredDocumentSignings.map((doc, docIndex)=>(
+							{documentSignings.map((doc, docIndex)=>(
 								<div key={docIndex} className='mt-3 w-full bg-gray-100 bg-opacity-40 p-5 rounded '>
-									<p className='font-medium text-verovian-purple mb-2'>{doc.name}</p>
-									<p className='text-md text-gray-600 mb-4 text-sm'>{doc.description}</p>
+									<p className='font-medium text-verovian-purple mb-2'>{docDetails(doc._id)?.name}</p>
+									<p className='text-md text-gray-600 mb-4 text-sm'>{docDetails(doc._id)?.description}</p>
 
 									<button onClick={()=>{readDocument(doc)}} className='mb-3 font-medium text-verovian-purple text-sm underline'>Click to read document</button>
 									<Checkbox 
-										checkboxToggleFunction={()=>{updateDocumentSigning(doc._id, !doc.acknowledged)}}
+										isChecked={doc.signed}
+										checkboxToggleFunction={()=>{updateDocSigning(docIndex, 'signed', !doc.signed)}}
 										checkboxLabel='I acknowledge that i have read and understood the provisions of this document'
 									/>
 									<div className='mt-3 w-full'>
 										<TextField
 											inputLabel="Your full name" 
 											inputPlaceholder="Sign your full name" 
-											fieldId="full-name" 
+											fieldId={`full-name-${docIndex}`} 
 											inputType="full-name" 
-											disabled={true}
+											disabled={false}
 											preloadValue={''}
-											hasError={validationErrors.firstName} 
-											returnFieldValue={(value)=>{updateDocumentSigning(doc._id, value)}}
+											hasError={validationErrors[`full-name-${docIndex}`]} 
+											returnFieldValue={(value)=>{updateDocSigning(docIndex, 'signature', value)}}
 										/>
 									</div>
 									<label className='block mt-3 text-xs text-gray-400'>Sign this document by writing your full name above</label>
@@ -480,7 +537,7 @@ const Signup = () => {
 									</button>
 								</div>
 								<div className='w-8/12'>
-									<FormButton buttonLabel={<span className='text-sm'>Complete onboarding</span>} buttonAction={()=>{completeOnboarding()}} />
+									<FormButton buttonLabel={<span className='text-sm'>Complete onboarding</span>} processing={processing} buttonAction={()=>{completeOnboarding()}} />
 								</div>
 							</div>
 						</>}
