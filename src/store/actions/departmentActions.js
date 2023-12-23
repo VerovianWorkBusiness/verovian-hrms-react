@@ -54,6 +54,32 @@ export const updateDepartment = (departmentId, departmentPayload) => async (disp
     }
 }
 
+export const updateDepartmentLeavePolicies = (departmentId, leavePolicyPayload) => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: CREATING_DEPARTMENT,
+            payload: true
+        })
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/leave-policies/update/${departmentId}`, leavePolicyPayload, { headers })
+        
+        dispatch({
+            type: CREATE_DEPARTMENT,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        // console.log(error)
+        dispatch({
+            type: DEPARTMENTS_ERROR,
+            // payload: error.response.data
+            error
+        })
+    }
+}
+
 export const deleteDepartment = (departmentId) => async (dispatch) => {    
     try{
         const headers = authHeader()

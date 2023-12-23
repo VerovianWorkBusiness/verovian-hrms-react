@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import SelectField from '../../elements/form/SelectField';
 import NumberField from '../../elements/form/NumberField';
 import TrashIcon from '../../elements/icons/TrashIcon';
+import FormButton from '../../elements/form/FormButton';
 
 const LeavePolicyManagement = () => {
     const leaveTypeSchema = {
@@ -57,6 +58,19 @@ const LeavePolicyManagement = () => {
         },
     ]
 
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const [selectedMonths, setSelectedMonths] = useState([]);
+
+    const toggleMonthSelection = (month) => {
+        let tempSelectedMonths = [...selectedMonths]
+        if(tempSelectedMonths.includes(month)) {
+            const index = tempSelectedMonths.indexOf(month);
+            tempSelectedMonths.splice(index, 1)
+            return
+        }
+        tempSelectedMonths.push(month)
+        setSelectedMonths(tempSelectedMonths)
+    }
 
     const togglePolicy = (policy) => {
         let temp = { ...leavePolicies}
@@ -86,6 +100,10 @@ const LeavePolicyManagement = () => {
         let temp = { ...leavePolicies}
         temp[field].value = value
     }
+
+    const triggerPolicyUpdate = (() => {
+
+    })
 
     return (
         <div className='w-full'>
@@ -284,7 +302,23 @@ const LeavePolicyManagement = () => {
                     </Switch>
                 </div>
             </div>
+            {leavePolicies.allowedMonths.active && 
+                <div className='w-full relative my-4'>
+                    <p className='text-xs text-gray-400 mb-3'>Select allowed months below</p>
+                    {months.map((month, monthIndex) => (
+                    <button onClick={()=>{toggleMonthSelection(month)}} key={monthIndex} className={`rounded border py-2 px-3 text-xs mr-2 mb-3 ${selectedMonths.includes(month) ? 'bg-verovian-purple border-verovian-purple text-white' : 'bg-gray-100 text-gray-500 border-gray-300'}`}>{month}</button>))}
+                </div>
+            }
+
+            <div className='w-1/2 mt-8 mb-8'>
+            <FormButton 
+              buttonLabel={`Update leave policies`} 
+              buttonAction={()=>{triggerPolicyUpdate()}} 
+              processing={false}
+            />
+          </div>
         </div>
+        
     )
 }
 
