@@ -36,7 +36,7 @@ export const updateDepartment = (departmentId, departmentPayload) => async (disp
             type: CREATING_DEPARTMENT,
             payload: true
         })
-        const response = await axios.put(`${process.env.REACT_APP_API_URL}/departments/${departmentId}`, departmentPayload, { headers })
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/departments/update/${departmentId}`, departmentPayload, { headers })
         
         dispatch({
             type: CREATE_DEPARTMENT,

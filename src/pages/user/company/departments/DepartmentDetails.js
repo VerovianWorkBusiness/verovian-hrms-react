@@ -3,9 +3,9 @@ import UserLayout from '../../../../components/layout/UserLayout'
 import CompanyPageLayout from '../../../../components/layout/CompanyPageLayout'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { authHeader, tableHeadersFields, transactionTimeStamp } from '../../../../utils';
+import { authHeader, tableHeadersFields, transactionTimeStamp, userDetails } from '../../../../utils';
 import axios from 'axios';
-import { ERROR } from '../../../../store/types';
+import { ERROR, SET_SUCCESS_MESSAGE } from '../../../../store/types';
 import { fetchEmployees } from '../../../../store/actions/employeeActions';
 import Status from '../../../../components/elements/Status';
 import EmployeeSnippet from '../../../../components/partials/employees/EmployeeSnippet';
@@ -16,6 +16,7 @@ import ChevronIcon from '../../../../components/elements/icons/ChevronIcon';
 import LeavePolicyManagement from '../../../../components/partials/departments/LeavePolicyManagement';
 import ModalLayout from '../../../../components/layout/ModalLayout';
 import EditDepartment from '../../../../components/partials/departments/EditDepartment';
+import { clearCreatedDepartment, fetchDepartments } from '../../../../store/actions/departmentActions';
 
 const DepartmentDetails = () => {
   const [department, setDepartment] = useState(null);
@@ -23,6 +24,7 @@ const DepartmentDetails = () => {
   const dispatch = useDispatch()
   const {departmentId} = useParams()
   const employeesState = useSelector(state => state.employees)
+  const departmentsState = useSelector(state => state.departments)
 
   useEffect(() => {
     const fetchDepartmentDetails = async () => {    
@@ -44,18 +46,20 @@ const DepartmentDetails = () => {
     }
     dispatch(fetchEmployees(`department=${departmentId}`))
     fetchDepartmentDetails()
-    // if(departmentState.createdDepartment !== null){
-    //   dispatch({
-    //     type: SET_SUCCESS_MESSAGE,
-    //     payload: "Department details updated"
-    //   })
-    // }
+    if(departmentsState.createdDepartment && departmentsState.createdDepartment !== null) {
+      dispatch({
+          type: SET_SUCCESS_MESSAGE,
+          payload: {
+              successMessage: `Department updated successfully!`
+            }
+      })
+      dispatch(fetchDepartments())
+      dispatch(clearCreatedDepartment())
+    }
     return () => {
       
     };
-  }, [dispatch, departmentId, 
-    // departmentState.createdDepartment
-  ]);
+  }, [dispatch, departmentId, departmentsState.createdDepartment]);
 
   const employeeTableOptions = {
     selectable: false,
@@ -98,7 +102,8 @@ const DepartmentDetails = () => {
       <CompanyPageLayout sectionTitle="Department details">
 
         {!loading ? 
-          <div className="w-full px-8 py-12 bg-white mt-8">
+          <div className="w-full px-8 py-12 bg-white mt-8 relative">
+          {(userDetails().accountPermissions?.includes('*') || userDetails().accountPermissions?.includes('departments.*') || userDetails().accountPermissions?.includes('departments.update')) && <button onClick={()=>{setEditingDepartment(true)}} className='absolute top-5 right-5 bg-gray-300 text-black p-3 rounded-md border border-gray-600 text-xs font-medium'>Edit Department Details</button>}
             <div className='w-1/2'>
               <div className='w-full my-5'>
                 <label className='text-xs tracking-[0.2em]'>DEPARTMENT NAME</label>

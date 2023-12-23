@@ -4,6 +4,7 @@ import TextareaField from '../../elements/form/TextareaField';
 import FormButton from '../../elements/form/FormButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { ERROR } from '../../../store/types';
+import { updateDepartment } from '../../../store/actions/departmentActions';
 
 const EditDepartment = ({department}) => {
   const [departmentPayload, setDepartmentPayload] = useState(department);
@@ -23,7 +24,7 @@ const EditDepartment = ({department}) => {
       return errors
   }
   
-  const triggerCreateDepartment = () => {
+  const triggerUpdateDepartment = () => {
     if (Object.values(validateForm()).includes(true)) {
       dispatch({
           type: ERROR,
@@ -33,7 +34,7 @@ const EditDepartment = ({department}) => {
       });
       return
     }
-    dispatch(EditDepartment(departmentPayload._id, departmentPayload))
+    dispatch(updateDepartment(departmentPayload._id, departmentPayload))
   }
 
   return (
@@ -44,7 +45,7 @@ const EditDepartment = ({department}) => {
             inputLabel="Department name" 
             fieldId="dept-name" 
             inputType="text" 
-            preloadValue={''}
+            preloadValue={departmentPayload.name || ''}
             hasError={validationErrors.name} 
             returnFieldValue={(value)=>{setDepartmentPayload({...departmentPayload, ...{name: value}})}}
           />
@@ -54,7 +55,7 @@ const EditDepartment = ({department}) => {
             inputLabel="Description" 
             fieldId="dept-description" 
             inputType="text" 
-            preloadValue={''}
+            preloadValue={departmentPayload.description || ''}
             hasError={false} 
             returnFieldValue={(value)=>{setDepartmentPayload({...departmentPayload, ...{description: value}})}}
           />
@@ -63,8 +64,8 @@ const EditDepartment = ({department}) => {
         <div className='my-8 flex flex-row-reverse items-center justify-between'>
           <div className='w-full'>
             <FormButton 
-              buttonLabel={`Create Department`} 
-              buttonAction={()=>{triggerCreateDepartment()}} 
+              buttonLabel={`Update Department`} 
+              buttonAction={()=>{triggerUpdateDepartment()}} 
               processing={departmentsState.creatingDepartments}
             />
           </div>
