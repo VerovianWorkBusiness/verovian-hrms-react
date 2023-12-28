@@ -77,7 +77,7 @@ function App() {
             <Route path="/user/employees" element={<Employees />} />
             <Route path="/user/employees/profile/:employeeId" element={<EmployeeDetails />} />
 
-            <Route path="/user/leaves-holidays" element={<Holidays />}>
+            <Route path="/user/leaves-holidays">
               <Route path="/user/leaves-holidays/" element={<Navigate replace to="/user/leaves-holidays/holidays" />} />
               <Route path="/user/leaves-holidays/holidays" element={<Holidays />} />
               <Route path="/user/leaves-holidays/leave-applications" element={<LeaveApplications />} />

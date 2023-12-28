@@ -3,7 +3,9 @@ import LeavesHolidaysLayout from '../../../../components/layout/LeavesHolidaysLa
 
 const LeaveApplication = () => {
   return (
-    <LeavesHolidaysLayout>LeaveApplication</LeavesHolidaysLayout>
+      <LeavesHolidaysLayout>
+        LeaveApplication
+      </LeavesHolidaysLayout>
   )
 }
 

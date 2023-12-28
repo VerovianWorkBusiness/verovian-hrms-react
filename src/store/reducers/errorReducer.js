@@ -8,7 +8,6 @@ export function errorReducer(state = initialState, action){
     const { error } = action;
 
     if(error){
-        console.log(error)
         return {
             error: error.response.data
         }

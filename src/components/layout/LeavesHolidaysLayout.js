@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
+import UserLayout from './UserLayout';
 
 
 const LeavesHolidaysLayout = ({children, sectionTitle}) => {
     const location = useLocation();
     const currentRoute = location.pathname;
     return (
+    <UserLayout pageTitle="Leaves and Holidays">
+
         <div className='w-full flex items-start gap-x-8'>
             <div className='w-[250px] p-[15px] rounded bg-verovian-light-purple'>
                 <Link to={`/user/leaves-holidays/holidays`}>
@@ -30,6 +33,7 @@ const LeavesHolidaysLayout = ({children, sectionTitle}) => {
                 <main>{children}</main>
             </div>
         </div>
+    </UserLayout>
     )
 }
 

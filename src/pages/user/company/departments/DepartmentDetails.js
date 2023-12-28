@@ -25,7 +25,7 @@ const DepartmentDetails = () => {
   const {departmentId} = useParams()
   const employeesState = useSelector(state => state.employees)
   const departmentsState = useSelector(state => state.departments)
-
+  const [departmentLeavePolicies, setDepartmentLeavePolicies] = useState(null);
   useEffect(() => {
     const fetchDepartmentDetails = async () => {    
       try{
@@ -35,6 +35,24 @@ const DepartmentDetails = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
 
         setDepartment(response.data.data)
+        fetchDepartmentLeavePolicies()
+      }
+      catch(error){
+        dispatch( {
+            type: ERROR,
+            error
+        })
+      }
+    }
+
+    const fetchDepartmentLeavePolicies = async () => {    
+      try{
+        const headers = authHeader()
+        let requestUrl = `leave-policies/${departmentId}`
+        setLoading(true)
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
+
+        setDepartmentLeavePolicies(response.data.data.data)
         setLoading(false)
       }
       catch(error){
@@ -44,6 +62,7 @@ const DepartmentDetails = () => {
         })
       }
     }
+
     dispatch(fetchEmployees(`department=${departmentId}`))
     fetchDepartmentDetails()
     if(departmentsState.createdDepartment && departmentsState.createdDepartment !== null) {
@@ -127,7 +146,7 @@ const DepartmentDetails = () => {
               </div>
               {leavePoliciesActive &&
                 <div className='py-5 border-t border-gray-300'>
-                  <LeavePolicyManagement />
+                  <LeavePolicyManagement departmentId={departmentId} currentPolicies={departmentLeavePolicies?.policies || null} />
                 </div>
               }
             </div>

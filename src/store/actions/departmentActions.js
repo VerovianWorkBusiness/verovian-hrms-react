@@ -71,7 +71,7 @@ export const updateDepartmentLeavePolicies = (departmentId, leavePolicyPayload) 
         
     }
     catch(error){
-        // console.log(error)
+        console.log(error)
         dispatch({
             type: DEPARTMENTS_ERROR,
             // payload: error.response.data
@@ -79,6 +79,32 @@ export const updateDepartmentLeavePolicies = (departmentId, leavePolicyPayload) 
         })
     }
 }
+
+// export const fetchDepartmentLeavePolicies = (departmentId) => async (dispatch) => {    
+//     try{
+//         const headers = authHeader()
+
+//         dispatch({
+//             type: CREATING_DEPARTMENT,
+//             payload: true
+//         })
+//         const response = await axios.get(`${process.env.REACT_APP_API_URL}/leave-policies/update/${departmentId}`, { headers })
+        
+//         dispatch({
+//             type: CREATE_DEPARTMENT,
+//             payload: response.data.data
+//         })
+        
+//     }
+//     catch(error){
+//         console.log(error)
+//         dispatch({
+//             type: DEPARTMENTS_ERROR,
+//             // payload: error.response.data
+//             error
+//         })
+//     }
+// }
 
 export const deleteDepartment = (departmentId) => async (dispatch) => {    
     try{
