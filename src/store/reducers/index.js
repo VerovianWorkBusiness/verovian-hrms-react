@@ -9,6 +9,7 @@ import employeeReducer from "./employeeReducer";
 import holidayReducer from "./holidayReducer";
 import documentReducer from "./documentReducer";
 import newsReducer from "./newsReducer";
+import leaveReducer from "./leaveReducer";
 
 const rootReducer = combineReducers({
     // Add reducers here
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     employees: employeeReducer,
     holidays: holidayReducer,
     documents: documentReducer,
-    news: newsReducer
+    news: newsReducer,
+    leaves: leaveReducer,
 });
 
 export default rootReducer;

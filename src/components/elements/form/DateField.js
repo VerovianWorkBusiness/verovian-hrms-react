@@ -20,7 +20,7 @@ const DateField = ({inputLabel, fieldId, disabled, hasError, preloadValue, retur
             <input 
                 id={fieldId} 
                 type="date" 
-                className={`font-montserrat mt-2 outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`}
+                className={`text-sm font-montserrat mt-2 outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`}
                 onChange={(e)=>{setValue(e.target.value)}}
                 value={fieldValue}
                 disabled={disabled}

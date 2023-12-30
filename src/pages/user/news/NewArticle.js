@@ -157,7 +157,7 @@ const NewArticle = () => {
 
   return (
     <UserLayout pageTitle={`Create news article`}>
-      <div className='w-10/12 xl:w-8/12 2xl:w-7/12 mx-auto mt-12'>
+      <div className='w-10/12 xl:w-8/12 2xl:w-7/12 mx-auto mt-12 bg-white p-8'>
         
         <div className='my-4 w-full'>
           <TextField

@@ -403,7 +403,7 @@ const NewEmployee = () => {
     if(employeesState.invitedEmployee !== null) {
       dispatch({
         type: SET_SUCCESS_MESSAGE,
-        payload: "Employee created successfully. An email has been sent to the user."
+        payload: {successMessage: "Employee created successfully. An email has been sent to the user."}
       })
       dispatch(clearInvitedEmployee())
       navigate('/user/employees')
