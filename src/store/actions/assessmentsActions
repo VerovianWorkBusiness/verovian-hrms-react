@@ -1,0 +1,91 @@
+import axios from "axios"
+import { authHeader } from "../../utils"
+import { ASSESSMENTS_ERROR, CREATE_ASSESSMENT, CREATING_ASSESSMENT, GET_ASSESSMENTS, GETTING_ASSESSMENTS, UPDATE_ASSESSMENT, UPDATING_ASSESSMENT } from "../types"
+
+
+export const createAssessment = (instructorPayload) => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: CREATING_ASSESSMENT,
+            payload: true
+        })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/training/assessments`, instructorPayload, { headers })
+        
+        dispatch({
+            type: CREATE_ASSESSMENT,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        dispatch({
+            type: ASSESSMENTS_ERROR,
+            error
+        })
+    }
+}
+
+export const clearCreatedAssessment = () => async (dispatch) => {    
+    dispatch({
+        type: CREATE_ASSESSMENT,
+        payload: null
+    })
+}
+
+export const getAssessments = () => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: GETTING_ASSESSMENTS,
+            payload: true
+        })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/training/assessments`, { headers })
+        // console.log(response.data.data)
+        dispatch({
+            type: GET_ASSESSMENTS,
+            payload: response.data.data
+        })
+        
+    }
+    catch(error){
+        dispatch({
+            type: ASSESSMENTS_ERROR,
+            error
+        })
+    }
+}
+
+export const updateAssessment = (assessmentId) => async (dispatch) => {    
+    try{
+        const headers = authHeader()
+
+        dispatch({
+            type: UPDATING_ASSESSMENT,
+            payload: true
+        })
+
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/training/assessments/${assessmentId}`, { headers })
+        
+        dispatch({
+            type: UPDATE_ASSESSMENT,
+            payload: response.data.data
+        })
+    }
+    catch(error){
+        dispatch({
+            type: ASSESSMENTS_ERROR,
+            error
+        })
+    }
+}
+
+export const clearUpdatedAssessment = () => async (dispatch) => {    
+    dispatch({
+        type: UPDATE_ASSESSMENT,
+        payload: null
+    })
+}
+

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import LeavesHolidaysLayout from '../../../../components/layout/LeavesHolidaysLayout'
-import { tableHeadersFields, transactionTimeStamp } from '../../../../utils'
+import { tableHeadersFields, transactionTimeStamp, userDetails } from '../../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import Preloader from '../../../../components/elements/Preloader'
 import DataTable from '../../../../components/elements/DataTable'
@@ -36,26 +36,30 @@ const LeaveApplications = () => {
   }
 
   const columnWidths = {
-      name: "w-full lg:w-4/12",
-      dates: "w-full lg:w-4/12",
-      type: "w-full lg:w-4/12",
-      datesOff: "w-full lg:w-4/12"
+    employee: "w-full lg:w-3/12",
+    leaveType: "w-full lg:w-2/12",
+    requestedDaysOff: "w-full lg:w-2/12",
+    startDay: "w-full lg:w-1/12",
+    status: "w-full lg:w-1/12",
+    supportingDocuments: "w-full lg:w-2/12",
+    dateApplied: "w-full lg:w-1/12",
+
   }
 
   const cleanupData = (dataSet) => {
+    console.log('->', dataSet)
       const data = []
 
       dataSet.forEach((item, itemIndex) => {
           data.push(
               {
-                  name: item.name,
-                  dates: item.dates.map(date => {
-                      return transactionTimeStamp(date).date
-                  }).join(', '),
-                  type: <p className="capitalize">{item.type.toLowerCase()} holiday</p>,
-                  datesOff: item.daysOff.map(date => {
-                      return transactionTimeStamp(date).date
-                  }).join(', ')
+                  employee: item?.employee?.name,
+                  leaveType: <p className="capitalize">{item.leaveType.toLowerCase()}</p>,
+                  requestedDaysOff: item.daysOff,
+                  startDay: transactionTimeStamp(item.proposedStartDay).date,
+                  status: item.status,
+                  supportingDocuments: item.supportingDocuments.length,
+                  dateApplied: transactionTimeStamp(item.createdAt).date
               },
           )
       })
@@ -74,10 +78,10 @@ const LeaveApplications = () => {
                   <div className='flex flex-row justify-between items-center mt-4 mb-4'>
                       <h3 className='font-medium text-lg text-gray-400'>Leave applications</h3>
                       <Link to={`new-application`}>
-                        <button className='flex gap-x-2 items-center rounded bg-verovian-purple px-3 py-3 text-white text-[13px] transition duration-200 hover:bg-blue-800'>
+                        {userDetails().employeeProfile && userDetails().employeeProfile !== '' && <button className='flex gap-x-2 items-center rounded bg-verovian-purple px-3 py-3 text-white text-[13px] transition duration-200 hover:bg-blue-800'>
                             {/* <PlusIcon className={`h-5 w-5`} /> */}
                             Apply for a leave
-                        </button>
+                        </button>}
                       </Link>
                   </div>
 
@@ -87,30 +91,30 @@ const LeaveApplications = () => {
 
                   <div className='w-full'>
                   {leavesState?.loadingLeaveApplications && leavesState?.loadingLeaveApplications === true ? 
-                  <Preloader preloadingText={'Loading leave applications... '} />
+                    <Preloader preloadingText={'Loading leave applications... '} />
                   : 
                   <>
-                      {leavesState?.leaveApplications?.length > 0 ? 
-                      <DataTable
-                          tableHeaders={tableHeadersFields(cleanupData(leavesState?.leaveApplications)[0])?.headers} 
-                          tableData={cleanupData(leavesState?.leaveApplications)} 
-                          columnWidths={columnWidths}
-                          columnDataStyles={{}}
-                          allFields={tableHeadersFields(cleanupData(leavesState?.leaveApplications)[0]).fields}
-                          onSelectItems={()=>{}}
-                          tableOptions={tableOptions}
-                          // pagination={{
-                          //     perPage: 25, 
-                          //     currentPage: 1,
-                          //     totalItems: 476,
-                          // }}
-                          changePage={()=>{}}
-                          updatePerPage={()=>{}}
-                          // expandedIndex={rowOpen || ''}
-                          // expansion={<OrderExpansion orders={orders} rowOpen={rowOpen} />}
-                      />
-                      :
-                          <EmptyState emptyStateText={`No leave applications recorded yet. Click on the "Apply for leave" button above to start an application`} />
+                    {leavesState?.leaveApplications?.applications?.length > 0 ? 
+                        <DataTable
+                            tableHeaders={tableHeadersFields(cleanupData(leavesState?.leaveApplications?.applications)[0])?.headers} 
+                            tableData={cleanupData(leavesState?.leaveApplications?.applications)} 
+                            columnWidths={columnWidths}
+                            columnDataStyles={{}}
+                            allFields={tableHeadersFields(cleanupData(leavesState?.leaveApplications?.applications)[0]).fields}
+                            onSelectItems={()=>{}}
+                            tableOptions={tableOptions}
+                            // pagination={{
+                            //     perPage: 25, 
+                            //     currentPage: 1,
+                            //     totalItems: 476,
+                            // }}
+                            changePage={()=>{}}
+                            updatePerPage={()=>{}}
+                            // expandedIndex={rowOpen || ''}
+                            // expansion={<OrderExpansion orders={orders} rowOpen={rowOpen} />}
+                        />
+                    :
+                        <EmptyState emptyStateText={`No leave applications recorded yet. Click on the "Apply for leave" button above to start an application`} />
                   }
                   </>
                   }

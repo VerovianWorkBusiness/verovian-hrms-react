@@ -47,7 +47,7 @@ const Wysiwyg = ({fieldTitle, initialValue, updateValue, hasError}) => {
 
     return (
         <div className="relative">
-            {fieldTitle && fieldTitle !== "" && <label className={`block text-gray-500 font-medium font-montserrat mb-2 text-sm`}>{fieldTitle}</label>}
+            {fieldTitle && fieldTitle !== "" && <label className={`block text-gray-500 font-medium font-montserrat mb-2 text-xs`}>{fieldTitle}</label>}
             {/* <button onclick={modules.history.undo()}>UNDO</button> */}
             <div className={`absolute ${fieldTitle && fieldTitle !== "" ? 'top-9' : 'top-2'}`}>
                 <button className="ql-undo mr-5" onClick={undoChange}>

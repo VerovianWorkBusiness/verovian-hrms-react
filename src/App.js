@@ -1,5 +1,6 @@
 
 import './App.css';
+import '@vidstack/react/player/styles/base.css';
 import { Provider } from "react-redux";
 import store from "./store/store";
 import ErrorNotifier from './components/elements/ErrorNotifier';
@@ -34,6 +35,14 @@ import Leaves from './pages/user/holiday-management/leaves/Leaves';
 import NewLeaveApplication from './pages/user/holiday-management/leaves/NewLeaveApplication';
 import LeaveApplication from './pages/user/holiday-management/leaves/LeaveApplication';
 import EditArticle from './pages/user/news/EditArticle';
+import Trainings from './pages/user/training/Trainings';
+import TrainingModules from './pages/user/training/training-modules/TrainingModules';
+import TrainingMaterials from './pages/user/training/TrainingMaterials';
+import NewTrainingMaterial from './pages/user/training/NewTrainingMaterial';
+import Instructors from './pages/user/training/Instructors';
+import NewTrainingModule from './pages/user/training/training-modules/NewTrainingModule';
+import TrainingModule from './pages/user/training/training-modules/TrainingModule';
+import NewAssessment from './pages/user/training/training-modules/assessments/NewAssessment';
 
 function App() {
   return (
@@ -76,6 +85,18 @@ function App() {
             
             <Route path="/user/employees" element={<Employees />} />
             <Route path="/user/employees/profile/:employeeId" element={<EmployeeDetails />} />
+
+            <Route path="/user/trainings">
+              <Route path="/user/trainings/" element={<Navigate replace to="/user/trainings/trainings" />} />
+              <Route path="/user/trainings/trainings" element={<Trainings />} />
+              <Route path="/user/trainings/training-modules" element={<TrainingModules />} />
+              <Route path="/user/trainings/training-modules/new-training-module" element={<NewTrainingModule />} />
+              <Route path="/user/trainings/training-modules/module/:moduleId" element={<TrainingModule />} />
+              <Route path="/user/trainings/training-modules/module/:moduleId/new-assessment" element={<NewAssessment />} />
+              <Route path="/user/trainings/training-materials" element={<TrainingMaterials />} />
+              <Route path="/user/trainings/training-materials/new-training-material" element={<NewTrainingMaterial />} />
+              <Route path="/user/trainings/instructors" element={<Instructors />} />
+            </Route>
 
             <Route path="/user/leaves-holidays">
               <Route path="/user/leaves-holidays/" element={<Navigate replace to="/user/leaves-holidays/holidays" />} />

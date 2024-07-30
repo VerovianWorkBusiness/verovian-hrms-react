@@ -25,7 +25,7 @@ const NewDocument = () => {
           payload: {successMessage: "Document created successfully"}
         })
         setDocumentPayload({})
-        navigate('user/documents')
+        navigate('/user/documents')
       }
       return () => {
         

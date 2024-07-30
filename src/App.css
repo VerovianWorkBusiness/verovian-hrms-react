@@ -104,3 +104,7 @@ div.ql-toolbar.ql-snow {
   height: inherit;
 }
 
+.scrollbar-hidden::-webkit-scrollbar{
+  display: none;
+}
+

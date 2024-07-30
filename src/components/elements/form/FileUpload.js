@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { ERROR } from '../../../store/types';
 import UploadIcon from '../icons/UploadIcon';
 
-const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preAddedFileName, acceptedFormats}) => {
+const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preAddedFileName, acceptedFormats, noSizeRestrict = false}) => {
   // const [file, setFile] = useState(null)
   const [fileName, setFileName] = useState(null)
   const [fileExt, setFileExt] = useState(null)
@@ -49,10 +49,10 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
   return (
     <div className='relative'>
       <label 
-        className={`text-sm lg:text-md cursor-text bg-transparent relative transition duration-200`}>
+        className={`text-xs lg:text-md cursor-text bg-transparent relative transition duration-200 ${hasError && hasError===true ? 'text-red-600' : 'text-gray-500'}`}>
             {fieldLabel}
       </label>
-      <div className={`${hasError && hasError===true ? 'border-red-400' : 'border-gray-400'}  border-dashed my-4 rounded block border bg-transparent items-center relative w-full p-5`}>
+      <div className={`${hasError && hasError===true ? 'border-red-400' : 'border-gray-400'}  border-dashed my-3 rounded block border bg-transparent items-center relative w-full p-5`}>
 
           <FileUploader
             multiple={false}
@@ -70,7 +70,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
                   }}}
               })
             }}
-            maxSize={4}
+            maxSize={!noSizeRestrict && 4}
             onSizeError={(error)=>{
               dispatch({
                 type: ERROR,
@@ -98,7 +98,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
               {uploadedFile &&  (
                   fileExt === 'jpeg' || fileExt === 'png' || fileExt === 'jpg' 
                   ?
-                  <img alt="" className="h-[70px] ml-3 mb-3 border-2 rounded-lg border-black" src={uploadedFile} /> 
+                  <img alt="" className="h-[70px] ml-3 mb-3 border-2" src={uploadedFile} /> 
                   :
                   <div className='h-[75px] mb-3 w-[70px] ml-3 border-2 rounded-lg border-black flex items-center justify-center'>
                       <p className='text-sm font-tomato font-medium text-black'>.{fileExt}</p>
@@ -109,7 +109,7 @@ const FileUpload = ({hasError, returnFileDetails, fieldLabel, preAddedFile, preA
                   ?
                   <>
                     <a href={preAddedFile} target="_blank" rel="noreferrer">
-                      <img alt="" className="h-[70px] border-2 border-black" src={preAddedFile} /> 
+                      <img alt="" className="h-[70px]" src={preAddedFile} /> 
                     </a>
                     <p className="text-xs px-0 mt-3 lg:px-4 text-black w-full">
                       File name: <span className='font-medium'>{preAddedFileName.split('/').pop()}</span>

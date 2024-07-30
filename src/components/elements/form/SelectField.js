@@ -52,7 +52,7 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
         <div ref={wrapperRef} className='relative w-full'>
 
             <label 
-            className={`cursor-text bg-transparent text-sm z-10 font-outfit font-medium transition duration-200  
+            className={`cursor-text bg-transparent text-xs z-10 font-outfit font-medium transition duration-200  
             ${hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-500'}`}>
                 {inputLabel}
             </label>
@@ -61,7 +61,7 @@ const SelectField = ({disabled, selectOptions, inputPlaceholder, inputLabel, dis
             {/* Text input */}
             <input 
                 type={"text"} 
-                className={`mt-2 text-sm outline-none bg-transparent w-full cursor-text border px-3 py-4 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`}
+                className={`mt-2 text-sm outline-none bg-transparent w-full cursor-text border p-3 rounded relative z-0 border-gray-400 placeholder:text-gray-400 placeholder:text-sm focus:border-black ${hasError && 'border-red-600'}`}
                 disabled={disabled}
                 onClick={()=>{openOptions()}} 
                 onChange={()=>{}}

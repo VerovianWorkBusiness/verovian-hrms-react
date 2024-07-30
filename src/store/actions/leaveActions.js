@@ -35,7 +35,7 @@ export const getLeaveApplications = () => async (dispatch) => {
             payload: true
         })
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/leaves/applications`, { headers })
-        
+        // console.log(response.data.data)
         dispatch({
             type: GET_LEAVE_APPLICATIONS,
             payload: response.data.data
@@ -73,3 +73,11 @@ export const updateLeaveApplication = (applicationId) => async (dispatch) => {
         })
     }
 }
+
+export const clearCreatedLeaveApplication = (applicationId) => async (dispatch) => {    
+    dispatch({
+        type: CREATE_LEAVE_APPLICATION,
+        payload: null
+    })
+}
+

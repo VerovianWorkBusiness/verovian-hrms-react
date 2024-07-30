@@ -45,13 +45,13 @@ const ModalLayout = ({children, dialogTitle, dialogIntro, isOpen, closeModal, ma
                         </button>
                         <h3
                             // as="h3"
-                            className="text-2xl font-bold leading-6 text-white text-center mb-8 pt-8"
+                            className="text-xl font-medium leading-6 text-white text-center mb-8 pt-8"
                         >
-                            {dialogTitle}
-                            {dialogIntro && dialogIntro !== '' && <span className='text-base inline-block mt-4 font-normal'>{dialogIntro}</span>}
+                            {dialogTitle}<br/>
+                            {dialogIntro && dialogIntro !== '' && <span className='text-sm inline-block mt-4 font-normal'>{dialogIntro}</span>}
                         </h3>
 
-                        <div className="mt-2 p-12 bg-white rounded-xl">
+                        <div className="mt-2 p-6 bg-white rounded-xl">
                             {children}
                         </div>
 

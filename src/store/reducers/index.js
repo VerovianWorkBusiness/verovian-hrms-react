@@ -10,6 +10,8 @@ import holidayReducer from "./holidayReducer";
 import documentReducer from "./documentReducer";
 import newsReducer from "./newsReducer";
 import leaveReducer from "./leaveReducer";
+import trainingsReducer from "./trainingsReducer";
+import instructorsReducer from "./instructorsReducer";
 
 const rootReducer = combineReducers({
     // Add reducers here
@@ -24,6 +26,8 @@ const rootReducer = combineReducers({
     documents: documentReducer,
     news: newsReducer,
     leaves: leaveReducer,
+    trainings: trainingsReducer,
+    instructors: instructorsReducer
 });
 
 export default rootReducer;

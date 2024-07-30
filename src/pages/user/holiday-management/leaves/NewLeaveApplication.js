@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react'
 import LeavesHolidaysLayout from '../../../../components/layout/LeavesHolidaysLayout'
 import { authHeader, userDetails } from '../../../../utils'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { ERROR } from '../../../../store/types'
+import { useDispatch, useSelector } from 'react-redux'
+import { ERROR, SET_SUCCESS_MESSAGE } from '../../../../store/types'
 import DateField from '../../../../components/elements/form/DateField'
 import SelectField from '../../../../components/elements/form/SelectField'
 import FormButton from '../../../../components/elements/form/FormButton'
 import TextareaField from '../../../../components/elements/form/TextareaField'
 import Preloader from '../../../../components/elements/Preloader'
 import NumberField from '../../../../components/elements/form/NumberField'
-import { createLeaveApplication } from '../../../../store/actions/leaveActions'
+import { createLeaveApplication, clearCreatedLeaveApplication } from '../../../../store/actions/leaveActions'
 import FileUpload from '../../../../components/elements/form/FileUpload'
 import TextField from '../../../../components/elements/form/TextField'
 
 const NewLeaveApplication = () => {
   const dispatch = useDispatch()
-
+  const leavesState = useSelector(state => state.leaves)
   const leaveApplicationSchema = {
     leaveType: '',
     description: '',
@@ -42,7 +42,6 @@ const NewLeaveApplication = () => {
         fetchDepartmentLeavePolicies(response.data.data.department)
       }
       catch(error){
-        console.log(error)
         dispatch( {
             type: ERROR,
             error
@@ -57,7 +56,7 @@ const NewLeaveApplication = () => {
         setLoading(true)
 
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/${requestUrl}`, { headers })
-        console.log('policies -> ', response.data.data.data)
+
         setDepartmentLeavePolicies(response.data.data.data)
         setLoading(false)
       }
@@ -70,10 +69,20 @@ const NewLeaveApplication = () => {
     }
 
     fetchEmployeeDetails()
+
+    if(leavesState.createdLeaveApplication !== null) {
+      dispatch(clearCreatedLeaveApplication())
+      dispatch({
+        type: SET_SUCCESS_MESSAGE,
+        payload: {
+          successMessage: 'Submitted successfully! You will be notified via email about the progress of your application.'
+        }
+      })
+    }
     return () => {
       
     };
-  }, [dispatch]);
+  }, [dispatch, leavesState.createdLeaveApplication]);
 
   const [leaveApplicationPayload, setLeaveApplicationPayload] = useState(leaveApplicationSchema);
   // const [supportingDocuments, setSupportingDocuments] = useState([]);
@@ -162,6 +171,7 @@ const NewLeaveApplication = () => {
     }
 
     let uploadedDocuments = []
+    if(files.length > 0 && files[0].name !== '' && files[0].file !== ''){
 			for (let index = 0; index < files.length; index++) {
 				const element = files[index];
 				const uploaded = await handleUpload(element.file)
@@ -171,6 +181,7 @@ const NewLeaveApplication = () => {
           documentUrl: uploaded.data.file
 				})
 			}
+    }
 
     if(uploadedDocuments.length > 0) {
       payload.supportingDocuments = uploadedDocuments
@@ -220,6 +231,7 @@ const NewLeaveApplication = () => {
                         hasError={false} 
                         returnFieldValue={(value)=>{setLeaveApplicationPayload({...leaveApplicationPayload, ...{description: value}})}}
                       />
+                      {leaveApplicationPayload.description.length > 250 && <p className='mt-3 text-xs text-red-600'>Description is too long. Must be 250 characters max.</p>}
                     </div>
 
                     <div className='mt-6 w-full flex items-center justify-between gap-x-6'>

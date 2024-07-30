@@ -3,7 +3,7 @@ import Logo from '../../assets/img/logo.png'
 import HomeIcon from '../elements/icons/HomeIcon'
 import NewspaperIcon from '../elements/icons/NewspaperIcon'
 import DocumentIcon from '../elements/icons/DocumentIcon'
-import LightbulbIcon from '../elements/icons/LightbulbIcon'
+// import LightbulbIcon from '../elements/icons/LightbulbIcon'
 import GroupIcon from '../elements/icons/GroupIcon'
 import PresentationIcon from '../elements/icons/PresentationIcon'
 import UsersIcon from '../elements/icons/UsersIcon'
@@ -81,10 +81,10 @@ const UserLayout = ({pageTitle, children}) => {
                 </button>
               </Link>
 
-              <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
+              {/* <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
                 <LightbulbIcon className={`w-5 h-5 text-black`} />
                 <p className='text-sm font-medium'>Manage Knowledge</p>
-              </div>
+              </div> */}
 
               <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
                 <GroupIcon className={`w-5 h-5 text-black`} />
@@ -98,10 +98,12 @@ const UserLayout = ({pageTitle, children}) => {
                 </button>
               </Link>
 
-              <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
-                <PresentationIcon className={`w-5 h-5 text-black`} />
-                <p className='text-sm font-medium'>Training</p>
-              </div>
+              <Link to={`/user/trainings`}>
+                <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/trainings') && 'bg-verovian-light-purple'}`}>
+                  <PresentationIcon className={`w-5 h-5 text-black`} />
+                  <p className='text-sm font-medium'>Training & Knowledge</p>
+                </button>
+              </Link>
 
               <div className='flex items-center gap-x-3 px-3 py-3 mb-1'>
                 <QueueListIcon className={`w-5 h-5 text-black`} />
@@ -109,7 +111,7 @@ const UserLayout = ({pageTitle, children}) => {
               </div>
 
               <Link to={`/user/leaves-holidays`}>
-                <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/holiday-management') && 'bg-verovian-light-purple'}`}>
+                <button className={`w-full flex items-center gap-x-3 px-3 py-3 mb-1 rounded-md ${currentRoute.includes('user/leaves-holidays') && 'bg-verovian-light-purple'}`}>
                   <GlobeIcon className={`w-5 h-5 text-black`} />
                   <p className='text-sm font-medium'>Leaves & Holidays</p>
                 </button>

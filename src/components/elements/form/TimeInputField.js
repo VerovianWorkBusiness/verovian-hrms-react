@@ -15,7 +15,7 @@ const TimeInputField = ({inputLabel, fieldId, inputType, hasError, preloadValue,
             className={`w-full relative`} 
         >
             <label 
-            className={`font-montserrat cursor-text bg-transparent text-sm z-10 font-outfit font-medium transition duration-200  
+            className={`font-montserrat cursor-text bg-transparent text-xs z-10 font-outfit font-medium transition duration-200  
             ${hasError ? 'text-red-600' : 'text-gray-500'}`}>
                 {inputLabel}
             </label>
