@@ -43,6 +43,7 @@ import Instructors from './pages/user/training/Instructors';
 import NewTrainingModule from './pages/user/training/training-modules/NewTrainingModule';
 import TrainingModule from './pages/user/training/training-modules/TrainingModule';
 import NewAssessment from './pages/user/training/training-modules/assessments/NewAssessment';
+import Assessment from './pages/user/training/training-modules/assessments/Assessment';
 
 function App() {
   return (
@@ -93,6 +94,7 @@ function App() {
               <Route path="/user/trainings/training-modules/new-training-module" element={<NewTrainingModule />} />
               <Route path="/user/trainings/training-modules/module/:moduleId" element={<TrainingModule />} />
               <Route path="/user/trainings/training-modules/module/:moduleId/new-assessment" element={<NewAssessment />} />
+              <Route path="/user/trainings/training-modules/module/:moduleId/assessments/:assessmentId" element={<Assessment />} />
               <Route path="/user/trainings/training-materials" element={<TrainingMaterials />} />
               <Route path="/user/trainings/training-materials/new-training-material" element={<NewTrainingMaterial />} />
               <Route path="/user/trainings/instructors" element={<Instructors />} />

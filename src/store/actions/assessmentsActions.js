@@ -3,7 +3,7 @@ import { authHeader } from "../../utils"
 import { ASSESSMENTS_ERROR, CREATE_ASSESSMENT, CREATING_ASSESSMENT, GET_ASSESSMENTS, GETTING_ASSESSMENTS, UPDATE_ASSESSMENT, UPDATING_ASSESSMENT } from "../types"
 
 
-export const createAssessment = (instructorPayload) => async (dispatch) => {    
+export const createAssessment = (assessmentPayload) => async (dispatch) => {    
     try{
         const headers = authHeader()
 
@@ -11,7 +11,7 @@ export const createAssessment = (instructorPayload) => async (dispatch) => {
             type: CREATING_ASSESSMENT,
             payload: true
         })
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/training/assessments`, instructorPayload, { headers })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/training/assessments`, assessmentPayload, { headers })
         
         dispatch({
             type: CREATE_ASSESSMENT,
@@ -34,16 +34,30 @@ export const clearCreatedAssessment = () => async (dispatch) => {
     })
 }
 
-export const getAssessments = () => async (dispatch) => {    
+export const getAssessments = (filterString, page, perPage) => async (dispatch) => {    
     try{
         const headers = authHeader()
+
+        let url = `${process.env.REACT_APP_API_URL}/training/assessments`
+        if(filterString && filterString !== '') {
+            url += `${url.includes('?') ? '&' : '?'}${filterString}`
+        }
+
+        if(page && page!=='') {
+            url += `${url.includes('?') ? '&' : '?'}page=${page}`
+        }
+
+        if(perPage && perPage!=='') {
+            url += `${url.includes('?') ? '&' : '?'}perPage=${perPage}`
+        }
 
         dispatch({
             type: GETTING_ASSESSMENTS,
             payload: true
         })
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/training/assessments`, { headers })
-        // console.log(response.data.data)
+
+        const response = await axios.get(url, { headers })
+        
         dispatch({
             type: GET_ASSESSMENTS,
             payload: response.data.data
