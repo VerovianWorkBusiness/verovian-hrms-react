@@ -12,6 +12,7 @@ import newsReducer from "./newsReducer";
 import leaveReducer from "./leaveReducer";
 import trainingsReducer from "./trainingsReducer";
 import instructorsReducer from "./instructorsReducer";
+import assessmentsReducer from "./assessmentsReducer";
 
 const rootReducer = combineReducers({
     // Add reducers here
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     news: newsReducer,
     leaves: leaveReducer,
     trainings: trainingsReducer,
-    instructors: instructorsReducer
+    instructors: instructorsReducer,
+    assessments: assessmentsReducer
 });
 
 export default rootReducer;
